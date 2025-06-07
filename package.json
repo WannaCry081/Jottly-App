@@ -12,6 +12,8 @@
     "db:studio": "drizzle-kit studio --config=./config/drizzle.config.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.1.0",
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.5",
     "@tanstack/react-query": "^4.39.1",
@@ -28,9 +30,11 @@
     "pg": "^8.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.57.0",
     "root": "git+https://github.com/tanstack/react-query.git",
     "sonner": "^2.0.5",
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.3.0",
+    "zod": "^3.25.56"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
