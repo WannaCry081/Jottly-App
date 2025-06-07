@@ -21,10 +21,8 @@ export async function GET(
   const originalUrl = result[0]?.originalUrl;
 
   if (!originalUrl) {
-    return NextResponse.redirect(
-      new URL("/404", process.env.NEXT_PUBLIC_BASE_URL)
-    );
+    return NextResponse.json({ url: `${process.env.NEXT_PUBLIC_API_URL}/404` });
   }
 
-  return NextResponse.json({ originalUrl });
+  return NextResponse.json({ url: originalUrl });
 }
