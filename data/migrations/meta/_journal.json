@@ -8,6 +8,13 @@
       "when": 1749300146472,
       "tag": "0000_InitialMigrate",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1749317109498,
+      "tag": "0001_AddPasswordProperty",
+      "breakpoints": true
     }
   ]
 }
