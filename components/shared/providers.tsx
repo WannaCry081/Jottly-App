@@ -18,10 +18,13 @@ const queryClient = new QueryClient({
 });
 
 export const Providers = ({ children }: PropsWithChildren) => {
+  const env = process.env.NEXT_PUBLIC_ENVIRONMENT;
+
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools position="bottom-right" />
+
+      {env !== "production" && <ReactQueryDevtools position="bottom-right" />}
       <Toaster position="bottom-right" />
     </QueryClientProvider>
   );
