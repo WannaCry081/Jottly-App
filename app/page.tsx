@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Unlink2, MoveRight, Info, Github } from "lucide-react";
 
 // Components
@@ -15,7 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import Link from "next/link";
 
 export default async function Page() {
   return (
