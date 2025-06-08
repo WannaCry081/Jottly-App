@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Unlink2, MoveRight, Info, Github } from "lucide-react";
+import { Link as LinkIcon, MoveRight, Info, Github } from "lucide-react";
 
 // Components
 import { UrlForm } from "@/components/url/UrlForm";
@@ -23,10 +23,10 @@ export default async function Page() {
       <header className="max-w-xl mx-auto">
         <div className="p-4 pt-8 lg:pt-14">
           <div className="flex items-center justify-between mb-2 md:mb-4">
-            <span className="inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-2.5">
               {/* Logo Icon */}
               <div className="size-8 md:size-10 bg-primary rounded-sm grid place-items-center">
-                <Unlink2 className="text-white dark:text-black" />
+                <LinkIcon className="text-white dark:text-black" />
               </div>
 
               {/* Title */}
