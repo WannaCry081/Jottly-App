@@ -30,6 +30,7 @@ import { toast } from "sonner";
 // Utility functions
 import { decrypt } from "@/utils/password";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 const PAGE_SIZE = 5;
 
@@ -228,41 +229,66 @@ const UrlListItem = ({
             <Badge variant="outline" className="hidden sm:block">
               {clicks === 1 ? `${clicks} Click` : `${clicks} Clicks`}
             </Badge>
-            <Button
-              size="icon"
-              variant="ghost"
-              aria-label={`Copy shortened URL ${baseUrl}/${code} to clipboard`}
-              title={`Copy ${baseUrl}/${code}`}
-              onClick={() => {
-                navigator.clipboard.writeText(`${baseUrl}/${code}`);
-                toast.success("Successfully copied to clipboard", {
-                  description: `${baseUrl}/${code} copied!`,
-                });
-              }}
-            >
-              <Copy className="size-4" aria-hidden="true" focusable="false" />
-            </Button>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  aria-label={`Copy shortened URL ${baseUrl}/${code} to clipboard`}
+                  title={`Copy ${baseUrl}/${code}`}
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${baseUrl}/${code}`);
+                    toast.success("Successfully copied to clipboard", {
+                      description: `${baseUrl}/${code} copied!`,
+                    });
+                  }}
+                >
+                  <Copy
+                    className="size-4"
+                    aria-hidden="true"
+                    focusable="false"
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Copy to Clipboard</p>
+              </TooltipContent>
+            </Tooltip>
           </span>
         </div>
         {password && (
           <CardFooter className="bg-primary/5 m-0 px-4 py-2 text-xs w-full block text-center font-medium relative">
             {password}
-            <Button
-              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              variant="ghost"
-              aria-label={isPasswordVisible ? "Hide password" : "Show password"}
-              title={isPasswordVisible ? "Hide password" : "Show password"}
-              className={cn(
-                "w-full h-full absolute backdrop-blur-sm z-10 inset-0 grid place-items-center hover:bg-transparent",
-                isPasswordVisible ? "" : "backdrop-blur-none"
-              )}
-            >
-              <Lock
-                className={cn("size-3.5", isPasswordVisible ? "" : "hidden")}
-                aria-hidden={!isPasswordVisible}
-                focusable="false"
-              />
-            </Button>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  variant="ghost"
+                  aria-label={
+                    isPasswordVisible ? "Hide password" : "Show password"
+                  }
+                  title={isPasswordVisible ? "Hide password" : "Show password"}
+                  className={cn(
+                    "w-full h-full absolute backdrop-blur-sm z-10 inset-0 grid place-items-center hover:bg-transparent",
+                    isPasswordVisible ? "" : "backdrop-blur-none"
+                  )}
+                >
+                  <Lock
+                    className={cn(
+                      "size-3.5",
+                      isPasswordVisible ? "" : "hidden"
+                    )}
+                    aria-hidden={!isPasswordVisible}
+                    focusable="false"
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>URL Password</p>
+              </TooltipContent>
+            </Tooltip>
           </CardFooter>
         )}
       </CardContent>
