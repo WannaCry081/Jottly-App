@@ -4,7 +4,9 @@ import { axiosInstance } from "@/config/axios.config";
 import type { UrlRequest } from "@/types/url";
 
 export const urlService = {
-  retrieve: async (code: string) => axiosInstance.get(`/${code}`),
+  list: async (ownerId: string) =>
+    axiosInstance.get(`/shorten?ownerId=${ownerId}`),
+  retrieve: async (code: string) => axiosInstance.get(`/shorten?code=${code}`),
   create: async (request: UrlRequest) =>
     axiosInstance.post("/shorten", request),
 };
