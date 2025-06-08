@@ -1,8 +1,7 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
-
-// Icons
 import { Copy, Lock } from "lucide-react";
 
 // Hooks
@@ -58,7 +57,13 @@ export const UrlList = ({ limit }: { limit?: number }) => {
   return (
     <ul className="space-y-2">
       {sortedData.map(
-        ({ id, originalUrl, code, password }: (typeof data.urls)[0]) => {
+        ({
+          id,
+          originalUrl,
+          code,
+          password,
+          clicks,
+        }: (typeof data.urls)[0]) => {
           const decryptedPassword = password
             ? decrypt(password ?? "").toString()
             : null;
@@ -69,6 +74,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
                 originalUrl={originalUrl}
                 code={code}
                 password={decryptedPassword}
+                clicks={clicks}
               />
             </li>
           );
@@ -83,11 +89,13 @@ const UrlListItem = ({
   originalUrl,
   code,
   password,
+  clicks,
 }: {
   baseUrl: string;
   originalUrl: string;
   code: string;
   password?: string | null;
+  clicks: number;
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(true);
 
@@ -97,16 +105,22 @@ const UrlListItem = ({
         <div className="flex items-center justify-between p-4">
           <CardHeader className="flex-1 p-0">
             <CardTitle className="text-sm text-ellipsis overflow-hidden w-[calc(100%-10px)]">
-              {baseUrl}/{code}
+              <Link
+                href={`${baseUrl}/${code}`}
+                className="hover:underline"
+                target="_blank"
+              >
+                {baseUrl}/{code}
+              </Link>
             </CardTitle>
-            <p className="text-xs text-ellipsis overflow-hidden w-[calc(100%-20px)]">
+            <p className="text-xs text-ellipsis text-muted-foreground overflow-hidden w-[calc(100%-20px)]">
               {originalUrl}
             </p>
           </CardHeader>
 
           <span className="inline-flex items-center gap-2">
             <Badge variant="outline" className="hidden sm:block">
-              23 Clicks
+              {clicks} Clicks
             </Badge>
             <Button
               size="icon"
