@@ -43,7 +43,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
       const id = localStorage.getItem("jotty-id");
       setOwnerId(id);
     }
-  }, []);
+  }, [ownerId]);
 
   const { data, isLoading } = useGetShortenUrlList(ownerId ?? "");
 
@@ -82,7 +82,6 @@ export const UrlList = ({ limit }: { limit?: number }) => {
   }
 
   if (limit) {
-    const totalSize = data.urls.length;
     const sortedData = data.urls
       .sort(
         (
