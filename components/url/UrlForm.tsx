@@ -1,13 +1,15 @@
 "use client";
 
 import { z } from "zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { Loader2Icon, Lock } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+// Hooks
 import { useCreateShortenUrl } from "@/hooks/useCreateShortenUrl";
 
+// Components
 import { Button } from "../ui/button";
 import {
   Form,
@@ -21,6 +23,7 @@ import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
 import PasswordInput from "../origin/password-input";
 
+// Utility functions
 import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -43,12 +46,21 @@ export const UrlForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     createShortenUrl({
+      ownerId: localStorage.getItem("jotty-id") || "",
       url: values.url,
       password: values.password || undefined,
     });
 
     form.reset();
   }
+
+  useEffect(() => {
+    const id = localStorage.getItem("jotty-id");
+    if (!id) {
+      const newId = crypto.randomUUID();
+      localStorage.setItem("jotty-id", newId);
+    }
+  }, []);
 
   return (
     <Form {...form}>
@@ -87,7 +99,6 @@ export const UrlForm = () => {
                 </FormLabel>
 
                 <Switch
-                  className="data-[state=checked]:bg-indigo-500"
                   checked={isChecked}
                   onCheckedChange={() => setIsChecked((prev) => !prev)}
                 />
