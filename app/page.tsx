@@ -14,20 +14,29 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default async function Page() {
   return (
     <React.Fragment>
       <header className="max-w-xl mx-auto">
         <div className="p-4 pt-8 lg:pt-14">
-          <span className="inline-flex items-center gap-2 mb-2 md:mb-4">
-            <div className="size-8 md:size-10 bg-primary rounded-sm grid place-items-center">
-              <Unlink2 className="text-white" />
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-primary">
-              Jottly
-            </h1>
-          </span>
+          <div className="flex items-center justify-between mb-2 md:mb-4">
+            <span className="inline-flex items-center gap-2">
+              {/* Logo Icon */}
+              <div className="size-8 md:size-10 bg-primary rounded-sm grid place-items-center">
+                <Unlink2 className="text-white dark:text-black" />
+              </div>
+
+              {/* Title */}
+              <h1 className="text-3xl md:text-4xl font-bold text-primary">
+                Jottly
+              </h1>
+            </span>
+
+            <ModeToggle />
+          </div>
+
           <p className="text-sm text-muted-foreground">
             Transform your long URLs into short, shareable links in seconds.
             Track clicks, manage links, and boost your online presence.
