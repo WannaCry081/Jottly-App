@@ -68,7 +68,7 @@ export async function PATCH(request: NextRequest) {
     .where(eq(schema.urlSchema.code, code));
 
   return NextResponse.json({
-    success: true,
+    success: response,
   });
 }
 

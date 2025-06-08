@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "db:push": "drizzle-kit push --config=./config/drizzle.config.ts",
     "db:migrate": "drizzle-kit generate --config=./config/drizzle.config.ts --name",
     "db:update": "drizzle-kit migrate --config=./config/drizzle.config.ts",
     "db:studio": "drizzle-kit studio --config=./config/drizzle.config.ts"

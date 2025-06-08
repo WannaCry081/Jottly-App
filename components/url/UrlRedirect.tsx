@@ -72,7 +72,7 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isLoading, data, router]);
+  }, [isLoading, data, router, updateShortenUrlClicks]);
 
   // Countdown and redirect for password-protected URLs after correct password
   useEffect(() => {
@@ -91,7 +91,7 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isDialogOpen, data, router]);
+  }, [isDialogOpen, data, router, updateShortenUrlClicks]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const decryptedPassword = decrypt(data.url.password);
