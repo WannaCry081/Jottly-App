@@ -65,7 +65,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
 
   if (data.urls.length === 0) {
     return (
-      <div className="text-center space-y-6 py-20">
+      <div className="text-center space-y-6 py-20 border border-dashed rounded-md">
         <div className="mx-auto w-fit">
           <div className="bg-muted/30 w-24 h-24 rounded-2xl grid place-items-center shadow-sm">
             <LinkIcon className="size-12 text-muted-foreground/80" />
