@@ -90,6 +90,7 @@ export const UrlForm = () => {
             <FormItem>
               <div className="flex items-center justify-between">
                 <FormLabel
+                  id="password-protection-label"
                   className={cn(
                     !isChecked ? "text-muted-foreground" : "text-primary",
                     "inline-flex items-center gap-1"
@@ -102,13 +103,14 @@ export const UrlForm = () => {
                   checked={isChecked}
                   onCheckedChange={() => setIsChecked((prev) => !prev)}
                   aria-labelledby="password-protection-label"
-                  aria-checked={isChecked}
-                  role="switch"
                 />
               </div>
-              <FormControl>
-                {isChecked && <PasswordInput {...field} />}
-              </FormControl>
+
+              {isChecked && (
+                <FormControl>
+                  <PasswordInput {...field} />
+                </FormControl>
+              )}
               <FormMessage />
             </FormItem>
           )}
