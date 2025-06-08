@@ -13,9 +13,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default async function Page() {
   return (
@@ -40,14 +45,22 @@ export default async function Page() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button
-                  size="icon"
-                  variant="outline"
-                  aria-label="View Jottly on GitHub"
-                >
-                  <Github aria-hidden="true" focusable="false" />
-                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      aria-label="View Jottly on GitHub"
+                    >
+                      <Github aria-hidden="true" focusable="false" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>GitHub Repository</p>
+                  </TooltipContent>
+                </Tooltip>
               </Link>
+
               <ModeToggle />
             </span>
           </div>
