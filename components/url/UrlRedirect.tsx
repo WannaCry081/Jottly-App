@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Loader2Icon, Info } from "lucide-react";
 
@@ -111,6 +111,10 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
         <Loader2Icon className="animate-spin size-10" />
       </div>
     );
+  }
+
+  if (!data?.url) {
+    notFound();
   }
 
   if (data.url.password && isDialogOpen) {
