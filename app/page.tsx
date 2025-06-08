@@ -1,5 +1,5 @@
 import React from "react";
-import { Unlink2, MoveRight, Info } from "lucide-react";
+import { Unlink2, MoveRight, Info, Github } from "lucide-react";
 
 // Components
 import { UrlForm } from "@/components/url/UrlForm";
@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import Link from "next/link";
 
 export default async function Page() {
   return (
@@ -33,8 +34,19 @@ export default async function Page() {
                 Jottly
               </h1>
             </span>
-
-            <ModeToggle />
+            <span className="inline-flex items-center space-x-2">
+              <Link
+                href="https://github.com/WannaCry081/Jottly-App"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View Jottly on GitHub"
+              >
+                <Button size="icon" variant="outline">
+                  <Github aria-hidden="true" focusable="false" />
+                </Button>
+              </Link>
+              <ModeToggle />
+            </span>
           </div>
 
           <p className="text-sm text-muted-foreground">

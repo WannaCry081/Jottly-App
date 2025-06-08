@@ -231,6 +231,8 @@ const UrlListItem = ({
             <Button
               size="icon"
               variant="ghost"
+              aria-label={`Copy shortened URL ${baseUrl}/${code} to clipboard`}
+              title={`Copy ${baseUrl}/${code}`}
               onClick={() => {
                 navigator.clipboard.writeText(`${baseUrl}/${code}`);
                 toast.success("Successfully copied to clipboard", {
@@ -238,7 +240,7 @@ const UrlListItem = ({
                 });
               }}
             >
-              <Copy className="size-4" />
+              <Copy className="size-4" aria-hidden="true" focusable="false" />
             </Button>
           </span>
         </div>
@@ -248,6 +250,8 @@ const UrlListItem = ({
             <Button
               onClick={() => setIsPasswordVisible(!isPasswordVisible)}
               variant="ghost"
+              aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+              title={isPasswordVisible ? "Hide password" : "Show password"}
               className={cn(
                 "w-full h-full absolute backdrop-blur-sm z-10 inset-0 grid place-items-center hover:bg-transparent",
                 isPasswordVisible ? "" : "backdrop-blur-none"
@@ -255,6 +259,8 @@ const UrlListItem = ({
             >
               <Lock
                 className={cn("size-3.5", isPasswordVisible ? "" : "hidden")}
+                aria-hidden={!isPasswordVisible}
+                focusable="false"
               />
             </Button>
           </CardFooter>
