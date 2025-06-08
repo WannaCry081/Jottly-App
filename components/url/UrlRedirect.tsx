@@ -33,6 +33,7 @@ import { useGetShortenUrl } from "@/hooks/useGetShortenUrl";
 
 // Utility functions
 import { decrypt } from "@/utils/password";
+import { useUpdateShortenUrlClicks } from "@/hooks/useUpdateShortenUrlClicks";
 
 const formSchema = z.object({
   password: z.string().min(1, "Password is required"),
@@ -52,6 +53,7 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
   });
 
   const { data, isLoading } = useGetShortenUrl(code);
+  const { updateShortenUrlClicks } = useUpdateShortenUrlClicks();
 
   // Countdown and redirect for non-password URLs
   useEffect(() => {
@@ -61,6 +63,7 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
         setCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
+            updateShortenUrlClicks(data.url.code);
             router.replace(data.url.originalUrl);
             return 0;
           }
@@ -79,6 +82,7 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
         setCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
+            updateShortenUrlClicks(data.url.code);
             router.replace(data.url.originalUrl);
             return 0;
           }
