@@ -1,6 +1,5 @@
 import { nanoid } from "nanoid";
 import { NextResponse, type NextRequest } from "next/server";
-import bcrypt from "bcryptjs";
 
 // Database initialization
 import { InitializeDatabase } from "@/data/db";
@@ -8,6 +7,9 @@ import { InitializeDatabase } from "@/data/db";
 // Schemas
 import * as schema from "@/data/schemas";
 import { eq } from "drizzle-orm";
+
+// Utility functions
+import { encrypt } from "@/utils/password";
 
 export async function POST(request: Request) {
   let newPassword: string | undefined;
@@ -17,7 +19,7 @@ export async function POST(request: Request) {
   const { ownerId, url, password } = await request.json();
 
   if (password) {
-    newPassword = await bcrypt.hash(password, 10);
+    newPassword = encrypt(password);
   }
 
   await db.insert(schema.urlSchema).values({
