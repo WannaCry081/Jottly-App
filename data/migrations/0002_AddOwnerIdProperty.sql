@@ -1,0 +1,1 @@
+ALTER TABLE "url" ADD COLUMN "owner_id" varchar(50) NOT NULL;
