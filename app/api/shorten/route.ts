@@ -34,6 +34,44 @@ export async function POST(request: Request) {
   });
 }
 
+export async function PATCH(request: NextRequest) {
+  const db = await InitializeDatabase();
+  const searchParams = request.nextUrl.searchParams;
+
+  const code = searchParams.get("code");
+
+  if (!code) {
+    return NextResponse.json(
+      { error: "Code parameter is required" },
+      { status: 400 }
+    );
+  }
+
+  const existing = await db
+    .select({ clicks: schema.urlSchema.clicks })
+    .from(schema.urlSchema)
+    .where(eq(schema.urlSchema.code, code))
+    .limit(1);
+
+  if (!existing.length) {
+    return NextResponse.json(
+      { error: "URL not found for given code" },
+      { status: 404 }
+    );
+  }
+
+  const newClicks = (existing[0].clicks ?? 0) + 1;
+
+  const response = await db
+    .update(schema.urlSchema)
+    .set({ clicks: newClicks })
+    .where(eq(schema.urlSchema.code, code));
+
+  return NextResponse.json({
+    success: true,
+  });
+}
+
 export async function GET(request: NextRequest) {
   const db = await InitializeDatabase();
   const searchParams = request.nextUrl.searchParams;
