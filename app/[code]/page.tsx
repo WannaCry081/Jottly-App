@@ -1,4 +1,30 @@
+import type { Metadata } from "next";
 import { UrlRedirectPage } from "@/components/url/UrlRedirect";
+
+export const metadata: Metadata = {
+  title: "Dynamic Code",
+  description:
+    "Redirect to your secure, password-protected, and trackable shortened link with Jottly. Fast, simple, and privacy-focused URL shortener.",
+  keywords: [
+    "Jottly",
+    "URL Shortener",
+    "Short Link",
+    "Password Protected Link",
+    "Trackable Link",
+    "Redirect",
+    "Secure Link",
+    "Private Link",
+  ],
+  openGraph: {
+    title: "Jottly | URL Shortener",
+    description:
+      "Redirect to your secure, password-protected, and trackable shortened link with Jottly. Fast, simple, and privacy-focused URL shortener.",
+    url: "https://jottly.vercel.app",
+    siteName: "Jottly",
+    locale: "en_US",
+    type: "website",
+  },
+};
 
 export default async function Page({
   params,
