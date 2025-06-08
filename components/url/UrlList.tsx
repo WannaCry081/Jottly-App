@@ -231,6 +231,8 @@ const UrlListItem = ({
             <Button
               size="icon"
               variant="ghost"
+              aria-label={`Copy shortened URL ${baseUrl}/${code} to clipboard`}
+              title={`Copy ${baseUrl}/${code}`}
               onClick={() => {
                 navigator.clipboard.writeText(`${baseUrl}/${code}`);
                 toast.success("Successfully copied to clipboard", {
@@ -238,7 +240,7 @@ const UrlListItem = ({
                 });
               }}
             >
-              <Copy className="size-4" />
+              <Copy className="size-4" aria-hidden="true" focusable="false" />
             </Button>
           </span>
         </div>
