@@ -22,6 +22,13 @@
       "when": 1749351742309,
       "tag": "0002_AddOwnerIdProperty",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1749368481950,
+      "tag": "0003_AddClicksProperty",
+      "breakpoints": true
     }
   ]
 }
