@@ -167,11 +167,15 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto h-svh">
-      <div className="flex items-center justify-center  w-full h-full font-medium">
-        Thanks for using Jottly! You are being redirected to the URL in{" "}
-        {countdown}
+    <section className="max-w-2xl mx-auto h-svh">
+      <div className="flex items-center justify-center  w-full h-full font-medium text-center p-4 flex-col space-y-2">
+        <span>
+          Thanks for using Jottly! You are being redirected to the URL in
+        </span>
+        <span className="text-3xl">
+          {countdown === 0 ? "Byeee 👋🏻" : countdown}
+        </span>
       </div>
-    </div>
+    </section>
   );
 };
