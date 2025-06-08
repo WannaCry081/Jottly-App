@@ -39,9 +39,12 @@ export default async function Page() {
                 href="https://github.com/WannaCry081/Jottly-App"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="View Jottly on GitHub"
               >
-                <Button size="icon" variant="outline">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  aria-label="View Jottly on GitHub"
+                >
                   <Github aria-hidden="true" focusable="false" />
                 </Button>
               </Link>
