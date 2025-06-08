@@ -102,7 +102,7 @@ export const UrlForm = () => {
                 <Switch
                   checked={isChecked}
                   onCheckedChange={() => setIsChecked((prev) => !prev)}
-                  aria-label="Toggle password protection"
+                  aria-labelledby="password-protection-label"
                 />
               </div>
 
