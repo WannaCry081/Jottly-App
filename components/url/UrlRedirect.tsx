@@ -127,7 +127,7 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
               <Info />
               <AlertTitle>URL Expiration Notice</AlertTitle>
               <AlertDescription>
-                This password-protected link expires in 30 days.
+                All URLs created on Jottly will expire after 30 days.
               </AlertDescription>
             </Alert>
 
