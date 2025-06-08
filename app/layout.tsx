@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | Jottly",
   },
   description:
-    "Jottly is a URL shortener that allows you to create short, shareable links quickly and easily. Track clicks, manage links, and boost your online presence.",
+    "Jottly is a fast, privacy-focused URL shortener. Create, manage, and track short links with ease.",
 };
 
 export default function RootLayout({
