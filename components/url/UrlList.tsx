@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Copy, Lock } from "lucide-react";
+import { Copy, Lock, Link as LinkIcon } from "lucide-react";
 
 // Hooks
 import { useGetShortenUrlList } from "@/hooks";
@@ -18,10 +18,10 @@ import {
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { toast } from "sonner";
-
 // Utility functions
 import { decrypt } from "@/utils/password";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "../ui/skeleton";
 
 export const UrlList = ({ limit }: { limit?: number }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -38,7 +38,16 @@ export const UrlList = ({ limit }: { limit?: number }) => {
   const { data, isLoading } = useGetShortenUrlList(ownerId ?? "");
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    // Skeleton loader for URL list using Skeleton component
+    return (
+      <ul className="space-y-2">
+        {[...Array(limit ?? 8)].map((_, i) => (
+          <li key={i}>
+            <Skeleton className="rounded-md h-20 w-full mb-2" />
+          </li>
+        ))}
+      </ul>
+    );
   }
 
   const sortedData = data.urls
@@ -53,6 +62,24 @@ export const UrlList = ({ limit }: { limit?: number }) => {
       }
     )
     .slice(0, limit ?? 8);
+
+  if (data.urls.length === 0) {
+    return (
+      <div className="text-center space-y-6 py-20">
+        <div className="mx-auto w-fit">
+          <div className="bg-muted/30 w-24 h-24 rounded-2xl grid place-items-center shadow-sm">
+            <LinkIcon className="size-12 text-muted-foreground/80" />
+          </div>
+        </div>
+        <div className="leading-tight">
+          <h3 className="text-lg font-medium">No shortened URLs found</h3>
+          <p className="text-sm text-muted-foreground">
+            Please try creating a new shortened link.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <ul className="space-y-2">
@@ -107,7 +134,7 @@ const UrlListItem = ({
             <CardTitle className="text-sm text-ellipsis overflow-hidden w-[calc(100%-10px)]">
               <Link
                 href={`${baseUrl}/${code}`}
-                className="hover:underline"
+                className="hover:underline underline-offset-2"
                 target="_blank"
               >
                 {baseUrl}/{code}
@@ -120,7 +147,7 @@ const UrlListItem = ({
 
           <span className="inline-flex items-center gap-2">
             <Badge variant="outline" className="hidden sm:block">
-              {clicks} Clicks
+              {clicks === 1 ? `${clicks} Click` : `${clicks} Clicks`}
             </Badge>
             <Button
               size="icon"
@@ -143,7 +170,7 @@ const UrlListItem = ({
               onClick={() => setIsPasswordVisible(!isPasswordVisible)}
               variant="ghost"
               className={cn(
-                "w-full h-full absolute backdrop-blur z-10 inset-0 grid place-items-center hover:bg-transparent",
+                "w-full h-full absolute backdrop-blur-sm z-10 inset-0 grid place-items-center hover:bg-transparent",
                 isPasswordVisible ? "" : "backdrop-blur-none"
               )}
             >
