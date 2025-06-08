@@ -13,7 +13,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default async function Page() {
   return (
@@ -44,13 +43,6 @@ export default async function Page() {
                 Access your latest shortened links here.
               </span>
             </div>
-            <Alert variant="important" className="text-left">
-              <Info />
-              <AlertTitle>URL Expiration Notice</AlertTitle>
-              <AlertDescription>
-                This password-protected link expires in 30 days.
-              </AlertDescription>
-            </Alert>
             <UrlList limit={3} />
           </section>
           <Dialog>
