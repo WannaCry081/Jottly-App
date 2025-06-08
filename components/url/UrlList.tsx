@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Copy, Lock, Link as LinkIcon } from "lucide-react";
 
 // Hooks
@@ -15,13 +15,23 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "../ui/pagination";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { Skeleton } from "../ui/skeleton";
 import { toast } from "sonner";
+
 // Utility functions
 import { decrypt } from "@/utils/password";
 import { cn } from "@/lib/utils";
-import { Skeleton } from "../ui/skeleton";
+
+const PAGE_SIZE = 5;
 
 export const UrlList = ({ limit }: { limit?: number }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -37,11 +47,14 @@ export const UrlList = ({ limit }: { limit?: number }) => {
 
   const { data, isLoading } = useGetShortenUrlList(ownerId ?? "");
 
+  // Pagination state (only if limit is not set)
+  const [page, setPage] = useState(0);
+
   if (isLoading) {
     // Skeleton loader for URL list using Skeleton component
     return (
       <ul className="space-y-2">
-        {[...Array(limit ?? 8)].map((_, i) => (
+        {[...Array(limit ?? PAGE_SIZE)].map((_, i) => (
           <li key={i}>
             <Skeleton className="rounded-md h-20 w-full mb-2" />
           </li>
@@ -49,19 +62,6 @@ export const UrlList = ({ limit }: { limit?: number }) => {
       </ul>
     );
   }
-
-  const sortedData = data.urls
-    .sort(
-      (
-        a: { createdAt: string | number | Date },
-        b: { createdAt: string | number | Date }
-      ) => {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      }
-    )
-    .slice(0, limit ?? 8);
 
   if (data.urls.length === 0) {
     return (
@@ -81,33 +81,113 @@ export const UrlList = ({ limit }: { limit?: number }) => {
     );
   }
 
-  return (
-    <ul className="space-y-2">
-      {sortedData.map(
-        ({
-          id,
-          originalUrl,
-          code,
-          password,
-          clicks,
-        }: (typeof data.urls)[0]) => {
-          const decryptedPassword = password
-            ? decrypt(password ?? "").toString()
-            : null;
+  if (limit) {
+    const totalSize = data.urls.length;
+    const sortedData = data.urls
+      .sort(
+        (
+          a: { createdAt: string | number | Date },
+          b: { createdAt: string | number | Date }
+        ) => {
           return (
-            <li key={id}>
-              <UrlListItem
-                baseUrl={baseUrl}
-                originalUrl={originalUrl}
-                code={code}
-                password={decryptedPassword}
-                clicks={clicks}
-              />
-            </li>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
         }
-      )}
-    </ul>
+      )
+      .slice(0, limit ?? PAGE_SIZE);
+
+    return (
+      <React.Fragment>
+        <ul className="space-y-2">
+          {sortedData.map(
+            ({
+              id,
+              originalUrl,
+              code,
+              password,
+              clicks,
+            }: (typeof data.urls)[0]) => {
+              const decryptedPassword = password
+                ? decrypt(password ?? "").toString()
+                : null;
+              return (
+                <li key={id}>
+                  <UrlListItem
+                    baseUrl={baseUrl}
+                    originalUrl={originalUrl}
+                    code={code}
+                    password={decryptedPassword}
+                    clicks={clicks}
+                  />
+                </li>
+              );
+            }
+          )}
+        </ul>
+      </React.Fragment>
+    );
+  }
+
+  const sortedData = data.urls.sort(
+    (
+      a: { createdAt: string | number | Date },
+      b: { createdAt: string | number | Date }
+    ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+  const totalPages = Math.ceil(sortedData.length / PAGE_SIZE);
+  const pagedData = sortedData.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  return (
+    <React.Fragment>
+      <ul className="space-y-2">
+        {pagedData.map(
+          ({
+            id,
+            originalUrl,
+            code,
+            password,
+            clicks,
+          }: (typeof data.urls)[0]) => {
+            const decryptedPassword = password
+              ? decrypt(password ?? "").toString()
+              : null;
+            return (
+              <li key={id}>
+                <UrlListItem
+                  baseUrl={baseUrl}
+                  originalUrl={originalUrl}
+                  code={code}
+                  password={decryptedPassword}
+                  clicks={clicks}
+                />
+              </li>
+            );
+          }
+        )}
+      </ul>
+      <Pagination className="mt-4">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => {
+                if (page > 0) setPage((p) => Math.max(0, p - 1));
+              }}
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <span className="px-4 text-sm text-muted-foreground">
+              Page {page + 1} of {totalPages}
+            </span>
+            <PaginationNext
+              onClick={() => {
+                if (page < totalPages - 1)
+                  setPage((p) => Math.min(totalPages - 1, p + 1));
+              }}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </React.Fragment>
   );
 };
 
