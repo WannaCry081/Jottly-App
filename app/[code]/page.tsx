@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { UrlRedirectPage } from "@/components/url/UrlRedirect";
 
 export const metadata: Metadata = {
-  title: "Jottly | URL Shortener",
+  title: "Dynamic Code",
   description:
     "Redirect to your secure, password-protected, and trackable shortened link with Jottly. Fast, simple, and privacy-focused URL shortener.",
   keywords: [
