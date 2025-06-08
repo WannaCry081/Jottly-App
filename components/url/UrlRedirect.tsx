@@ -118,8 +118,8 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
       <Dialog open={isDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Welcome to Jottly</DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground">
+            <DialogTitle className="text-left">Welcome to Jottly</DialogTitle>
+            <DialogDescription className="text-left text-sm text-muted-foreground">
               Jottly is a URL shortener. To proceed with the redirect, please
               enter the password.
             </DialogDescription>
