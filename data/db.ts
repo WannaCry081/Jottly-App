@@ -15,7 +15,9 @@ export const InitializeDatabase = async () => {
     client = await pool.connect();
     const db = drizzle(pool, { schema });
 
-    await migrate(db, { migrationsFolder: "./data/migrations" });
+    if (process.env.NEXT_PUBLIC_ENV !== "production") {
+      await migrate(db, { migrationsFolder: "./data/migrations" });
+    }
 
     return db;
   } catch (error) {
