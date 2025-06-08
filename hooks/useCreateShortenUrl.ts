@@ -23,12 +23,16 @@ export const useCreateShortenUrl = () => {
         });
       });
       // Display success message
-      toast.success("Shortened URL created successfully");
+      toast.success("Shortened URL created successfully", {
+        description: "You can now share your shortened link!",
+      });
     },
 
     onError: (error) => {
       // Display error message
-      toast.error("An error occurred in creating the shortened URL");
+      toast.error("An error occurred in creating the shortened URL", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
     },
   });
 
