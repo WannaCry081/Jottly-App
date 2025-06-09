@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { Copy, Lock, Link as LinkIcon } from "lucide-react";
+import { Copy, Lock, QrCode, Link as LinkIcon } from "lucide-react";
+import QRCode from "qrcode";
 
 // Hooks
 import { useGetShortenUrlList } from "@/hooks";
@@ -31,6 +32,15 @@ import { toast } from "sonner";
 import { decrypt } from "@/utils/password";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "../ui/dialog";
 
 const PAGE_SIZE = 5;
 
@@ -50,6 +60,27 @@ export const UrlList = ({ limit }: { limit?: number }) => {
 
   // Pagination state (only if limit is not set)
   const [page, setPage] = useState(0);
+
+  // QR code state
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
+  const [selectedQR, setSelectedQR] = useState<string | null>(null);
+
+  const generateQRCode = async (shortUrl: string) => {
+    try {
+      const qrCodeDataUrl = await QRCode.toDataURL(shortUrl, {
+        width: 256,
+        margin: 2,
+        color: {
+          dark: "#000000",
+          light: "#FFFFFF",
+        },
+      });
+      setQrCodeUrl(qrCodeDataUrl);
+      setSelectedQR(shortUrl);
+    } catch (error) {
+      console.error("Error generating QR code:", error);
+    }
+  };
 
   if (isLoading) {
     // Skeleton loader for URL list using Skeleton component
@@ -118,6 +149,11 @@ export const UrlList = ({ limit }: { limit?: number }) => {
                     code={code}
                     password={decryptedPassword}
                     clicks={clicks}
+                    qrCodeUrl={qrCodeUrl}
+                    selectedQR={selectedQR}
+                    generateQRCode={generateQRCode}
+                    setQrCodeUrl={setQrCodeUrl}
+                    setSelectedQR={setSelectedQR}
                   />
                 </li>
               );
@@ -159,6 +195,11 @@ export const UrlList = ({ limit }: { limit?: number }) => {
                   code={code}
                   password={decryptedPassword}
                   clicks={clicks}
+                  qrCodeUrl={qrCodeUrl}
+                  selectedQR={selectedQR}
+                  generateQRCode={generateQRCode}
+                  setQrCodeUrl={setQrCodeUrl}
+                  setSelectedQR={setSelectedQR}
                 />
               </li>
             );
@@ -197,14 +238,31 @@ const UrlListItem = ({
   code,
   password,
   clicks,
+  qrCodeUrl,
+  selectedQR,
+  generateQRCode,
+  setQrCodeUrl,
+  setSelectedQR,
 }: {
   baseUrl: string;
   originalUrl: string;
   code: string;
   password?: string | null;
   clicks: number;
+  qrCodeUrl: string | null;
+  selectedQR: string | null;
+  generateQRCode: (shortUrl: string) => Promise<void>;
+  setQrCodeUrl: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedQR: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(true);
+  const shortUrl = `${baseUrl}/${code}`;
+
+  // Helper to handle QR dialog close
+  const handleCloseQRDialog = () => {
+    setQrCodeUrl(null);
+    setSelectedQR(null);
+  };
 
   return (
     <Card className="rounded-md py-0 shadow-none">
@@ -213,11 +271,11 @@ const UrlListItem = ({
           <CardHeader className="flex-1 p-0">
             <CardTitle className="text-sm text-ellipsis overflow-hidden w-[calc(100%-10px)]">
               <Link
-                href={`${baseUrl}/${code}`}
+                href={shortUrl}
                 className="hover:underline underline-offset-2"
                 target="_blank"
               >
-                {baseUrl}/{code}
+                {shortUrl}
               </Link>
             </CardTitle>
             <p className="text-xs text-ellipsis text-muted-foreground overflow-hidden w-[calc(100%-20px)]">
@@ -226,35 +284,80 @@ const UrlListItem = ({
           </CardHeader>
 
           <span className="inline-flex items-center gap-2">
-            <Badge variant="outline" className="hidden sm:block">
+            <Badge variant="outline">
               {clicks === 1 ? `${clicks} Click` : `${clicks} Clicks`}
             </Badge>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  aria-label={`Copy shortened URL ${baseUrl}/${code} to clipboard`}
-                  title={`Copy ${baseUrl}/${code}`}
-                  onClick={() => {
-                    navigator.clipboard.writeText(`${baseUrl}/${code}`);
-                    toast.success("Successfully copied to clipboard", {
-                      description: `${baseUrl}/${code} copied!`,
-                    });
-                  }}
-                >
-                  <Copy
-                    className="size-4"
-                    aria-hidden="true"
-                    focusable="false"
-                  />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Copy to Clipboard</p>
-              </TooltipContent>
-            </Tooltip>
+            <Dialog
+              open={selectedQR === shortUrl}
+              onOpenChange={(open) => {
+                if (!open) handleCloseQRDialog();
+              }}
+            >
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => generateQRCode(shortUrl)}
+                    >
+                      <Copy />
+                    </Button>
+                  </DialogTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Actions</p>
+                </TooltipContent>
+              </Tooltip>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="text-left">
+                    Jottly Shortened URL
+                  </DialogTitle>
+                  <DialogDescription className="text-left text-sm text-muted-foreground">
+                    Copy to clipboard, scan, or download the QR code to access
+                    your shortened URL.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col items-center space-y-2 ">
+                  {qrCodeUrl ? (
+                    <img src={qrCodeUrl} alt="QR Code" className="size-56" />
+                  ) : (
+                    <Skeleton className="size-56 rounded-md" />
+                  )}
+                  <div className="w-full p-2 text-sm font-medium text-center">
+                    {shortUrl}
+                  </div>
+                </div>
+                <DialogFooter className="flex-row">
+                  <Button
+                    className="flex-1"
+                    onClick={() => {
+                      navigator.clipboard.writeText(shortUrl);
+                      toast.success("Copied URL to clipboard!");
+                    }}
+                  >
+                    <Copy /> Copy <span className="hidden sm:inline">URL</span>
+                  </Button>
+                  <Button
+                    className="flex-1"
+                    onClick={() => {
+                      if (qrCodeUrl) {
+                        const link = document.createElement("a");
+                        link.href = qrCodeUrl;
+                        link.download = `jottly-qr-${code}.png`;
+                        link.click();
+                      }
+                    }}
+                    disabled={!qrCodeUrl}
+                  >
+                    <QrCode />
+                    Download <span className="hidden sm:inline">QR Code</span>
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </span>
         </div>
         {password && (
