@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://jottly.vercel.app/sitemap.xml
-
-Disallow: /api/
-Disallow: /admin/
