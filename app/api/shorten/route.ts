@@ -13,17 +13,16 @@ import { encrypt } from "@/utils/password";
 import { apiResponse } from "@/utils/response";
 
 export async function POST(request: Request) {
-  let newPassword: string | null;
   const newCode = nanoid(6);
 
   const { ownerId, url, password } = await request.json();
-  newPassword = password ? encrypt(password) : null;
+  const newPassword = password ? encrypt(password) : null;
 
   try {
     await db.insert(schema.urlSchema).values({
       ownerId: ownerId,
       code: newCode,
-      password: newPassword ?? null,
+      password: newPassword,
       originalUrl: url,
     });
 
@@ -32,6 +31,7 @@ export async function POST(request: Request) {
       message: "URL shortened successfully",
     });
   } catch (error) {
+    console.error("Error shortening URL: ", error);
     return apiResponse({
       success: false,
       message: "Failed to shorten URL",
@@ -78,6 +78,7 @@ export async function PATCH(request: NextRequest) {
       message: "Clicks updated successfully",
     });
   } catch (error) {
+    console.error("Error shortening URL: ", error);
     return apiResponse({
       success: false,
       message: "Failed to update clicks",
@@ -119,6 +120,7 @@ export async function GET(request: NextRequest) {
 
     return apiResponse({ status: 204 });
   } catch (error) {
+    console.error("Error shortening URL: ", error);
     return apiResponse({
       success: false,
       message: "Failed to retrieve URLs",
