@@ -1,40 +1,53 @@
-import { useTransition } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-// Components
+// UI Components
 import { toast } from "sonner";
 
 // Services
 import { urlService } from "@/services";
 
 // Types
-import { UrlRequest } from "@/types/url";
+import type { Response } from "@/types/response";
+import type { Url, UrlRequest } from "@/types/url";
+
+// Constants
+import { URL_KEY } from "@/constants/query";
 
 export const useCreateShortenUrl = () => {
   const queryClient = useQueryClient();
-  const [isPending, startTransition] = useTransition();
-  const { mutate: createShortenUrl } = useMutation({
-    mutationFn: async (request: UrlRequest) => await urlService.create(request),
-    onSuccess: () => {
-      startTransition(() => {
+
+  const mutation = useMutation<Response<Url>, Error, UrlRequest>(
+    async (request) => {
+      const response = await urlService.create(request);
+      return response.data;
+    },
+    {
+      onSuccess: (data) => {
+        const { code } = data.data;
+
+        queryClient.invalidateQueries({ queryKey: [URL_KEY] });
         queryClient.invalidateQueries({
-          queryKey: ["shortenUrl"],
+          queryKey: [URL_KEY, code],
           exact: true,
         });
-      });
-      // Display success message
-      toast.success("Shortened URL created successfully", {
-        description: "You can now share your shortened link!",
-      });
-    },
 
-    onError: (error) => {
-      // Display error message
-      toast.error("An error occurred in creating the shortened URL", {
-        description: error instanceof Error ? error.message : "Unknown error",
-      });
-    },
-  });
+        toast.success("Shortened URL created successfully", {
+          description: data.message,
+        });
+      },
+      onError: (error) => {
+        toast.error("Failed to create shortened URL", {
+          description: error.message,
+        });
+      },
+    }
+  );
 
-  return { isPending, createShortenUrl };
+  return {
+    createShortenUrl: mutation.mutate,
+    isLoading: mutation.isLoading,
+    isError: mutation.isError,
+    data: mutation.data,
+    error: mutation.error,
+  };
 };
