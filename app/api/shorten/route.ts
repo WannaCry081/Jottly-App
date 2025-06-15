@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { NextResponse, type NextRequest } from "next/server";
 
 // Database initialization
-import { InitializeDatabase } from "@/data/db";
+import { db } from "@/data/db";
 
 // Schemas
 import * as schema from "@/data/schemas";
@@ -15,7 +15,6 @@ export async function POST(request: Request) {
   let newPassword: string | undefined;
   const code = nanoid(6);
 
-  const db = await InitializeDatabase();
   const { ownerId, url, password } = await request.json();
 
   if (password) {
@@ -35,7 +34,6 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const db = await InitializeDatabase();
   const searchParams = request.nextUrl.searchParams;
 
   const code = searchParams.get("code");
@@ -73,7 +71,6 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const db = await InitializeDatabase();
   const searchParams = request.nextUrl.searchParams;
 
   const code = searchParams.get("code");
