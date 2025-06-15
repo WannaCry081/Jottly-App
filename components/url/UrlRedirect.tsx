@@ -52,48 +52,31 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
     },
   });
 
-  const { data, isLoading } = useGetShortenUrl(code);
+  const { data, isLoading, isError } = useGetShortenUrl(code);
   const { updateClicks } = useUpdateShortenUrlClicks();
+  const isDataPending = isLoading || isError;
 
   const urlData = data?.data;
 
-  // Countdown and redirect for non-password URLs
   useEffect(() => {
-    if (!isLoading && urlData && !urlData.password) {
-      setCountdown(5);
-      const interval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            updateClicks(urlData.code);
-            // router.replace(urlData.originalUrl);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [isLoading, data, router, updateClicks]);
+    if (!urlData?.password && !isDialogOpen) setIsDialogOpen(false);
 
-  // Countdown and redirect for password-protected URLs after correct password
-  useEffect(() => {
-    if (!isDialogOpen && urlData?.originalUrl) {
-      setCountdown(5);
-      const interval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            updateClicks(urlData.code);
-            // router.replace(urlData.originalUrl);
-            return 0;
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          if (urlData?.originalUrl) {
+            updateClicks(code);
+            router.push(urlData?.originalUrl);
           }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [isDialogOpen, data, router, updateClicks]);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isDialogOpen, urlData, code, updateClicks, router]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const decryptedPassword = decrypt(urlData?.password || "");
@@ -107,7 +90,7 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
     }
   }
 
-  if (isLoading) {
+  if (isDataPending) {
     return (
       <div className="grid place-items-center w-screen h-screen">
         <Loader2Icon className="animate-spin size-10" />
