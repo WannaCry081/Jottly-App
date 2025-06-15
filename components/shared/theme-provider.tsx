@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
-// Components
+// UI Components
 import { TooltipProvider } from "../ui/tooltip";
 
 export function ThemeProvider({

@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import QRCode from "qrcode";
 import React, { useEffect, useState } from "react";
 import { Copy, Lock, QrCode, Link as LinkIcon } from "lucide-react";
-import QRCode from "qrcode";
 
 // Hooks
 import { useGetShortenUrlList } from "@/hooks";
 
-// Components
+// UI Components
 import {
   Card,
   CardContent,
@@ -27,11 +27,6 @@ import {
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
-import { toast } from "sonner";
-
-// Utility functions
-import { decrypt } from "@/utils/password";
-import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import {
   Dialog,
@@ -42,6 +37,13 @@ import {
   DialogFooter,
   DialogDescription,
 } from "../ui/dialog";
+import { toast } from "sonner";
+
+// Utility functions
+import { decrypt } from "@/utils/password";
+import { cn } from "@/lib/utils";
+
+// Types
 import { Url } from "@/types/url";
 
 const PAGE_SIZE = 4;

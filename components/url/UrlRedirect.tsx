@@ -6,7 +6,7 @@ import { notFound, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Loader2Icon, Info } from "lucide-react";
 
-// Components
+// UI Components
 import {
   Dialog,
   DialogContent,

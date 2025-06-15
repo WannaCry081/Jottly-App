@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 
-// Components
+// UI Components
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {

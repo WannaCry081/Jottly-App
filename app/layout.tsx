@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 
+// Custom Components
 import { Providers } from "@/components/shared/providers";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 

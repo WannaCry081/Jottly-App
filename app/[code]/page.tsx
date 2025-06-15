@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+// Custom Components
 import { UrlRedirectPage } from "@/components/url/UrlRedirect";
 
 export const metadata: Metadata = {

@@ -2,10 +2,12 @@ import React from "react";
 import Link from "next/link";
 import { Link as LinkIcon, MoveRight, Info, Github } from "lucide-react";
 
-// Components
+// Custom Components
 import { UrlForm } from "@/components/url/UrlForm";
 import { UrlList } from "@/components/url/UrlList";
 import { UrlTracker } from "@/components/url/URLTracker";
+
+// UI Components
 import {
   Dialog,
   DialogContent,
@@ -30,12 +32,9 @@ export default async function Page() {
         <div className="p-4 pt-8 lg:pt-14">
           <div className="flex items-center justify-between mb-2 md:mb-4">
             <span className="inline-flex items-center gap-2.5">
-              {/* Logo Icon */}
               <div className="size-8 md:size-10 bg-primary rounded-sm grid place-items-center">
                 <LinkIcon className="text-white dark:text-black" />
               </div>
-
-              {/* Title */}
               <h1 className="text-3xl md:text-4xl font-bold text-primary">
                 Jottly
               </h1>
