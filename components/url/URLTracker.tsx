@@ -1,12 +1,26 @@
 "use client";
 
-import React from "react";
-import { Link2, MousePointer, Shield, ChartColumn } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import {
+  Link2,
+  MousePointer,
+  Shield,
+  ChartColumn,
+  type LucideIcon,
+} from "lucide-react";
 
 // Components
-import { Card, CardContent } from "@/components/ui/card";
-import { LucideIcon } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
+import { Skeleton } from "../ui/skeleton";
+
+// Utility functions
 import { cn } from "@/lib/utils";
+
+// Hooks
+import { useGetShortenUrlList } from "@/hooks";
+
+// Types
+import { Url } from "@/types/url";
 
 type UrlTrackerItemType = {
   icon: LucideIcon;
@@ -18,51 +32,85 @@ type UrlTrackerItemType = {
   };
 };
 
-const UrlTrackerItems: UrlTrackerItemType[] = [
-  {
-    icon: Link2,
-    title: "Total URLs",
-    description: "Links created",
-    data: 0,
-    style: {
-      textColor: "text-blue-600 dark:text-blue-400",
+const UrlTrackerItems = (data: Url[]) => {
+  const totalUrls = data.length;
+  const totalProtectedUrls =
+    data.filter(({ password }) => password).length || 0;
+  const totalClicks = data.reduce((acc, url) => {
+    return acc + (url.clicks || 0);
+  }, 0);
+  const avgClicks = Math.floor(totalUrls > 0 ? totalClicks / totalUrls : 0);
+  return [
+    {
+      icon: Link2,
+      title: "Total URLs",
+      description: "Links created",
+      data: totalUrls,
+      style: {
+        textColor: "text-blue-600 dark:text-blue-400",
+      },
     },
-  },
-  {
-    icon: Shield,
-    title: "Protected URLs",
-    description: "Password secured",
-    data: 0,
-    style: {
-      textColor: "text-violet-600 dark:text-violet-400",
+    {
+      icon: Shield,
+      title: "Protected URLs",
+      description: "Password secured",
+      data: totalProtectedUrls,
+      style: {
+        textColor: "text-violet-600 dark:text-violet-400",
+      },
     },
-  },
-  {
-    icon: MousePointer,
-    title: "Total Clicks",
-    description: "Across all links",
-    data: 0,
-    style: {
-      textColor: "text-green-600 dark:text-green-400",
+    {
+      icon: MousePointer,
+      title: "Total Clicks",
+      description: "Across all links",
+      data: totalClicks,
+      style: {
+        textColor: "text-green-600 dark:text-green-400",
+      },
     },
-  },
-  {
-    icon: ChartColumn,
-    title: "Avg Clicks",
-    description: "Per link average",
-    data: 0,
-    style: {
-      textColor: "text-amber-600 dark:text-amber-400",
+    {
+      icon: ChartColumn,
+      title: "Avg Clicks",
+      description: "Per link average",
+      data: avgClicks,
+      style: {
+        textColor: "text-amber-600 dark:text-amber-400",
+      },
     },
-  },
-];
+  ];
+};
 
 export const UrlTracker = () => {
-  const items = UrlTrackerItems;
+  const [ownerId, setOwnerId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!ownerId) {
+      const id = localStorage.getItem("jotty-id");
+      setOwnerId(id);
+    }
+  }, [ownerId]);
+
+  const {
+    data: shortenUrlList,
+    isLoading,
+    isError,
+  } = useGetShortenUrlList(ownerId ?? "");
+
+  if (isLoading || isError) {
+    return (
+      <React.Fragment>
+        {Array.from({ length: 4 }).map((_, index) => (
+          <Skeleton key={index} className="h-24 w-full" />
+        ))}
+      </React.Fragment>
+    );
+  }
+
+  const items = UrlTrackerItems(shortenUrlList?.urls || []);
 
   return (
     <React.Fragment>
-      {items.map(({ icon, title, data, style }, index) => {
+      {items.map(({ icon, title, data, style }: UrlTrackerItemType, index) => {
         const IconComponent = icon;
 
         return (
