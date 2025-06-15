@@ -49,39 +49,49 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-
   const code = searchParams.get("code");
 
-  if (!code) {
-    return NextResponse.json(
-      { error: "Code parameter is required" },
-      { status: 400 }
-    );
+  try {
+    if (!code) {
+      return apiResponse({
+        success: false,
+        message: "Code parameter is required",
+        status: 400,
+      });
+    }
+
+    const existing = await db
+      .select({ clicks: schema.urlSchema.clicks })
+      .from(schema.urlSchema)
+      .where(eq(schema.urlSchema.code, code))
+      .limit(1);
+
+    if (!existing.length) {
+      return apiResponse({
+        success: false,
+        message: "URL not found for given code",
+        status: 404,
+      });
+    }
+
+    const newClicks = (existing[0].clicks ?? 0) + 1;
+
+    await db
+      .update(schema.urlSchema)
+      .set({ clicks: newClicks })
+      .where(eq(schema.urlSchema.code, code));
+
+    return apiResponse({
+      message: "Clicks updated successfully",
+      status: 204,
+    });
+  } catch (error) {
+    return apiResponse({
+      success: false,
+      message: "Failed to update clicks",
+      status: 500,
+    });
   }
-
-  const existing = await db
-    .select({ clicks: schema.urlSchema.clicks })
-    .from(schema.urlSchema)
-    .where(eq(schema.urlSchema.code, code))
-    .limit(1);
-
-  if (!existing.length) {
-    return NextResponse.json(
-      { error: "URL not found for given code" },
-      { status: 404 }
-    );
-  }
-
-  const newClicks = (existing[0].clicks ?? 0) + 1;
-
-  const response = await db
-    .update(schema.urlSchema)
-    .set({ clicks: newClicks })
-    .where(eq(schema.urlSchema.code, code));
-
-  return NextResponse.json({
-    success: response,
-  });
 }
 
 export async function GET(request: NextRequest) {
