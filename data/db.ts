@@ -1,29 +1,28 @@
-import { Pool, PoolClient } from "pg";
+import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { migrate } from "drizzle-orm/node-postgres/migrator";
 
+// Schemas
 import * as schema from "./schemas";
 
-export const InitializeDatabase = async () => {
-  const pool = new Pool({
-    connectionString: process.env.NEXT_PUBLIC_DATABASE_URL,
-  });
+declare global {
+  var __pgPool: Pool | undefined;
+  var __db: ReturnType<typeof drizzle> | undefined;
+}
 
-  let client: PoolClient | undefined;
+if (!process.env.NEXT_PUBLIC_DATABASE_URL) {
+  throw new Error("Missing NEXT_PUBLIC_DATABASE_URL env var");
+}
 
-  try {
-    client = await pool.connect();
-    const db = drizzle(pool, { schema });
+const pool = (global.__pgPool ??= new Pool({
+  connectionString: process.env.NEXT_PUBLIC_DATABASE_URL,
+  ssl: process.env.NEXT_PUBLIC_ENV === "production",
+}));
 
-    if (process.env.NEXT_PUBLIC_ENV !== "production") {
-      await migrate(db, { migrationsFolder: "./data/migrations" });
-    }
+export const db = (global.__db ??= drizzle(pool, { schema }));
 
-    return db;
-  } catch (error) {
-    console.error("Failed to initialize database:", error);
-    throw error;
-  } finally {
-    if (client) client.release();
-  }
-};
+if (process.env.NEXT_PUBLIC_ENV !== "production") {
+  migrate(db, { migrationsFolder: "./data/migrations" })
+    .then(() => console.info("Migrations complete"))
+    .catch((err) => console.error("Migration failed", err));
+}

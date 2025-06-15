@@ -3,13 +3,13 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { Loader2Icon, Lock } from "lucide-react";
+import { Info, Loader2Icon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // Hooks
 import { useCreateShortenUrl } from "@/hooks/useCreateShortenUrl";
 
-// Components
+// UI Components
 import { Button } from "../ui/button";
 import {
   Form,
@@ -21,10 +21,12 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import PasswordInput from "../origin/password-input";
 
 // Utility functions
 import { cn } from "@/lib/utils";
+import { generateRandomID } from "@/utils/generator";
 
 const formSchema = z.object({
   url: z.string().url("Please enter a valid URL").min(1, "URL is required"),
@@ -32,7 +34,8 @@ const formSchema = z.object({
 });
 
 export const UrlForm = () => {
-  const { isPending, createShortenUrl } = useCreateShortenUrl();
+  const { isLoading, isError, createShortenUrl } = useCreateShortenUrl();
+  const isPending = isLoading || isError;
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
@@ -57,7 +60,7 @@ export const UrlForm = () => {
   useEffect(() => {
     const id = localStorage.getItem("jotty-id");
     if (!id) {
-      const newId = crypto.randomUUID();
+      const newId = generateRandomID();
       localStorage.setItem("jotty-id", newId);
     }
   }, []);
@@ -96,7 +99,19 @@ export const UrlForm = () => {
                     "inline-flex items-center gap-1"
                   )}
                 >
-                  <Lock className="size-3.5" /> <span>Password Protection</span>
+                  <span>Password Protection</span>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="size-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="w-[200px] text-center">
+                        Add a <strong>password</strong> to restrict access to
+                        your shortened URL.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
                 </FormLabel>
 
                 <Switch

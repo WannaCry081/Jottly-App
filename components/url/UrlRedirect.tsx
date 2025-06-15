@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Loader2Icon, Info } from "lucide-react";
 
-// Components
+// UI Components
 import {
   Dialog,
   DialogContent,
@@ -52,49 +52,34 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
     },
   });
 
-  const { data, isLoading } = useGetShortenUrl(code);
-  const { updateShortenUrlClicks } = useUpdateShortenUrlClicks();
+  const { data, isLoading, isError } = useGetShortenUrl(code);
+  const { updateClicks } = useUpdateShortenUrlClicks();
+  const isDataPending = isLoading || isError;
 
-  // Countdown and redirect for non-password URLs
-  useEffect(() => {
-    if (!isLoading && data?.url && !data.url.password) {
-      setCountdown(5);
-      const interval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            updateShortenUrlClicks(data.url.code);
-            router.replace(data.url.originalUrl);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [isLoading, data, router, updateShortenUrlClicks]);
+  const urlData = data?.data;
 
-  // Countdown and redirect for password-protected URLs after correct password
   useEffect(() => {
-    if (!isDialogOpen && data?.url?.originalUrl) {
-      setCountdown(5);
-      const interval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            clearInterval(interval);
-            updateShortenUrlClicks(data.url.code);
-            router.replace(data.url.originalUrl);
-            return 0;
+    if (!urlData?.password && !isDialogOpen) setIsDialogOpen(false);
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          if (urlData?.originalUrl) {
+            updateClicks(code);
+            router.push(urlData?.originalUrl);
           }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [isDialogOpen, data, router, updateShortenUrlClicks]);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isDialogOpen, urlData, code, updateClicks, router]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const decryptedPassword = decrypt(data.url.password);
+    const decryptedPassword = decrypt(urlData?.password || "");
     if (values.password === decryptedPassword) {
       setIsDialogOpen(false);
     } else {
@@ -105,7 +90,7 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
     }
   }
 
-  if (isLoading) {
+  if (isDataPending) {
     return (
       <div className="grid place-items-center w-screen h-screen">
         <Loader2Icon className="animate-spin size-10" />
@@ -113,7 +98,11 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
     );
   }
 
-  if (data.url.password && isDialogOpen) {
+  if (!urlData) {
+    notFound();
+  }
+
+  if (urlData.password && isDialogOpen) {
     return (
       <Dialog open={isDialogOpen}>
         <DialogContent>

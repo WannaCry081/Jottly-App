@@ -1,12 +1,10 @@
 "use client";
 
 import { PropsWithChildren } from "react";
-
-// Tanstack React Query
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-// Components
+// UI Components
 import { Toaster } from "sonner";
 
 const queryClient = new QueryClient({
@@ -18,10 +16,13 @@ const queryClient = new QueryClient({
 });
 
 export const Providers = ({ children }: PropsWithChildren) => {
+  const env = process.env.NEXT_PUBLIC_ENVIRONMENT;
+
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools position="bottom-right" />
+
+      {env !== "production" && <ReactQueryDevtools position="bottom-right" />}
       <Toaster position="bottom-right" />
     </QueryClientProvider>
   );

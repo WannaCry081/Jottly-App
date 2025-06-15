@@ -2,9 +2,12 @@ import React from "react";
 import Link from "next/link";
 import { Link as LinkIcon, MoveRight, Info, Github } from "lucide-react";
 
-// Components
+// Custom Components
 import { UrlForm } from "@/components/url/UrlForm";
 import { UrlList } from "@/components/url/UrlList";
+import { UrlTracker } from "@/components/url/URLTracker";
+
+// UI Components
 import {
   Dialog,
   DialogContent,
@@ -13,9 +16,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default async function Page() {
   return (
@@ -24,12 +32,9 @@ export default async function Page() {
         <div className="p-4 pt-8 lg:pt-14">
           <div className="flex items-center justify-between mb-2 md:mb-4">
             <span className="inline-flex items-center gap-2.5">
-              {/* Logo Icon */}
               <div className="size-8 md:size-10 bg-primary rounded-sm grid place-items-center">
                 <LinkIcon className="text-white dark:text-black" />
               </div>
-
-              {/* Title */}
               <h1 className="text-3xl md:text-4xl font-bold text-primary">
                 Jottly
               </h1>
@@ -40,14 +45,22 @@ export default async function Page() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button
-                  size="icon"
-                  variant="outline"
-                  aria-label="View Jottly on GitHub"
-                >
-                  <Github aria-hidden="true" focusable="false" />
-                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      aria-label="View Jottly on GitHub"
+                    >
+                      <Github aria-hidden="true" focusable="false" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>GitHub Repository</p>
+                  </TooltipContent>
+                </Tooltip>
               </Link>
+
               <ModeToggle />
             </span>
           </div>
@@ -60,7 +73,12 @@ export default async function Page() {
       </header>
       <main className=" max-w-xl mx-auto">
         <div className="p-4 py-2 space-y-6">
+          <div className="grid grid-cols-4 gap-2">
+            <UrlTracker />
+          </div>
+
           <UrlForm />
+
           <section className="space-y-4">
             <div className="leading-tight">
               <h2 className="text-lg md:text-xl font-medium">Recent Links</h2>

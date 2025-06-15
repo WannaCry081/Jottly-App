@@ -2,7 +2,9 @@
 
 import { useId, useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Input } from "@/components/ui/input";
+
+// UI Components
+import { Input } from "../ui/input";
 
 export default function Component(props: React.ComponentProps<typeof Input>) {
   const id = useId();
