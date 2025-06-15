@@ -100,26 +100,37 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get("code");
   const ownerId = searchParams.get("ownerId");
 
-  if (code) {
-    const response = await db
-      .select()
-      .from(schema.urlSchema)
-      .where(eq(schema.urlSchema.code, code));
+  try {
+    if (code) {
+      const response = await db
+        .select()
+        .from(schema.urlSchema)
+        .where(eq(schema.urlSchema.code, code));
 
-    return NextResponse.json({ url: response[0] });
+      return apiResponse({
+        data: response[0],
+        message: "URL retrieved successfully",
+      });
+    }
+
+    if (ownerId) {
+      const response = await db
+        .select()
+        .from(schema.urlSchema)
+        .where(eq(schema.urlSchema.ownerId, ownerId));
+
+      return apiResponse({
+        data: response,
+        message: "URLs retrieved successfully",
+      });
+    }
+
+    return apiResponse({ status: 204 });
+  } catch (error) {
+    return apiResponse({
+      success: false,
+      message: "Failed to retrieve URLs",
+      status: 500,
+    });
   }
-
-  if (ownerId) {
-    const response = await db
-      .select()
-      .from(schema.urlSchema)
-      .where(eq(schema.urlSchema.ownerId, ownerId));
-
-    return NextResponse.json({ urls: response });
-  }
-
-  return NextResponse.json(
-    { error: "Invalid request parameters" },
-    { status: 400 }
-  );
 }
