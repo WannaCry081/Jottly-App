@@ -21,11 +21,12 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Switch } from "../ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import PasswordInput from "../origin/password-input";
 
 // Utility functions
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { generateRandomID } from "@/utils/generator";
 
 const formSchema = z.object({
   url: z.string().url("Please enter a valid URL").min(1, "URL is required"),
@@ -58,7 +59,7 @@ export const UrlForm = () => {
   useEffect(() => {
     const id = localStorage.getItem("jotty-id");
     if (!id) {
-      const newId = crypto.randomUUID();
+      const newId = generateRandomID();
       localStorage.setItem("jotty-id", newId);
     }
   }, []);
