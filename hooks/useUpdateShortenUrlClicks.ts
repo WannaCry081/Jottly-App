@@ -1,23 +1,53 @@
-import { useTransition } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+// UI Components
+import { toast } from "sonner";
 
 // Services
 import { urlService } from "@/services";
 
+// Types
+import type { Response } from "@/types/response";
+import type { Url } from "@/types/url";
+
+// Constants
+import { URL_KEY } from "@/constants/query";
+
 export const useUpdateShortenUrlClicks = () => {
   const queryClient = useQueryClient();
-  const [isPending, startTransition] = useTransition();
-  const { mutate: updateShortenUrlClicks } = useMutation({
-    mutationFn: async (code: string) => await urlService.partialUpdate(code),
-    onSuccess: () => {
-      startTransition(() => {
+
+  const mutate = useMutation<Response<Url>, Error, string>(
+    async (code: string) => {
+      const response = await urlService.partialUpdate(code);
+      return response.data;
+    },
+    {
+      onSuccess: (data) => {
+        const { message, data: responseData } = data;
+        const { code } = responseData;
+
         queryClient.invalidateQueries({
-          queryKey: ["shortenUrl"],
+          queryKey: [URL_KEY, code],
           exact: true,
         });
-      });
-    },
-  });
 
-  return { isPending, updateShortenUrlClicks };
+        toast.success("Clicks updated successfully", {
+          description: message,
+        });
+      },
+      onError: (error) => {
+        toast.error("Failed to update clicks", {
+          description: error.message,
+        });
+      },
+    }
+  );
+
+  return {
+    data: mutate.data,
+    isLoading: mutate.isLoading,
+    isError: mutate.isError,
+    error: mutate.error,
+    updateClicks: mutate.mutate,
+  };
 };
