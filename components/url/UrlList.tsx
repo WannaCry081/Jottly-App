@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Copy, Lock, QrCode, Link as LinkIcon } from "lucide-react";
@@ -307,9 +308,16 @@ const UrlListItem = ({
                     your shortened URL.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-col items-center space-y-2 ">
+                <div className="flex flex-col items-center gap-2 py-2">
                   {qrCodeUrl ? (
-                    <img src={qrCodeUrl} alt="QR Code" className="size-56" />
+                    <Image
+                      src={qrCodeUrl}
+                      alt="QR Code"
+                      width={160}
+                      height={160}
+                      className="size-40"
+                      unoptimized
+                    />
                   ) : (
                     <Skeleton className="size-56 rounded-md" />
                   )}
