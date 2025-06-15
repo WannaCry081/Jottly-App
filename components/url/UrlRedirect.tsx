@@ -53,18 +53,20 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
   });
 
   const { data, isLoading } = useGetShortenUrl(code);
-  const { updateShortenUrlClicks } = useUpdateShortenUrlClicks();
+  const { updateClicks } = useUpdateShortenUrlClicks();
+
+  const urlData = data?.data;
 
   // Countdown and redirect for non-password URLs
   useEffect(() => {
-    if (!isLoading && data?.url && !data.url.password) {
+    if (!isLoading && urlData && !urlData.password) {
       setCountdown(5);
       const interval = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
-            updateShortenUrlClicks(data.url.code);
-            router.replace(data.url.originalUrl);
+            updateClicks(urlData.code);
+            // router.replace(urlData.originalUrl);
             return 0;
           }
           return prev - 1;
@@ -72,18 +74,18 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isLoading, data, router, updateShortenUrlClicks]);
+  }, [isLoading, data, router, updateClicks]);
 
   // Countdown and redirect for password-protected URLs after correct password
   useEffect(() => {
-    if (!isDialogOpen && data?.url?.originalUrl) {
+    if (!isDialogOpen && urlData?.originalUrl) {
       setCountdown(5);
       const interval = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
-            updateShortenUrlClicks(data.url.code);
-            router.replace(data.url.originalUrl);
+            updateClicks(urlData.code);
+            // router.replace(urlData.originalUrl);
             return 0;
           }
           return prev - 1;
@@ -91,10 +93,10 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isDialogOpen, data, router, updateShortenUrlClicks]);
+  }, [isDialogOpen, data, router, updateClicks]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const decryptedPassword = decrypt(data.url.password);
+    const decryptedPassword = decrypt(urlData?.password || "");
     if (values.password === decryptedPassword) {
       setIsDialogOpen(false);
     } else {
@@ -113,11 +115,11 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
     );
   }
 
-  if (!data?.url) {
+  if (!urlData) {
     notFound();
   }
 
-  if (data.url.password && isDialogOpen) {
+  if (urlData.password && isDialogOpen) {
     return (
       <Dialog open={isDialogOpen}>
         <DialogContent>

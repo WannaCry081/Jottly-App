@@ -34,7 +34,8 @@ const formSchema = z.object({
 });
 
 export const UrlForm = () => {
-  const { isPending, createShortenUrl } = useCreateShortenUrl();
+  const { isLoading, isError, createShortenUrl } = useCreateShortenUrl();
+  const isPending = isLoading || isError;
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
 

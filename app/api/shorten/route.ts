@@ -20,14 +20,6 @@ export async function POST(request: Request) {
   newPassword = password ? encrypt(password) : null;
 
   try {
-    if (!newPassword) {
-      return apiResponse({
-        success: false,
-        message: "Password is required",
-        status: 400,
-      });
-    }
-
     await db.insert(schema.urlSchema).values({
       ownerId: ownerId,
       code: newCode,

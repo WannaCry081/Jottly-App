@@ -23,16 +23,11 @@ export const useUpdateShortenUrlClicks = () => {
     },
     {
       onSuccess: (data) => {
-        const { message, data: responseData } = data;
-        const { code } = responseData;
+        const { code } = data.data;
 
         queryClient.invalidateQueries({
           queryKey: [URL_KEY, code],
           exact: true,
-        });
-
-        toast.success("Clicks updated successfully", {
-          description: message,
         });
       },
       onError: (error) => {

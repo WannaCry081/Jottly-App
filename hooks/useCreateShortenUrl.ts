@@ -31,8 +31,8 @@ export const useCreateShortenUrl = () => {
           exact: true,
         });
 
-        toast.success("Shortened URL created successfully", {
-          description: data.message,
+        toast.success("URL shortened successfully", {
+          description: "Your shortened link is ready to share.",
         });
       },
       onError: (error) => {

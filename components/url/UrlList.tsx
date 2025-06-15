@@ -49,7 +49,7 @@ import { Url } from "@/types/url";
 const PAGE_SIZE = 4;
 
 export const UrlList = ({ limit }: { limit?: number }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
 
   const [ownerId, setOwnerId] = useState<string | null>(null);
 
@@ -61,6 +61,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
   }, [ownerId]);
 
   const { data, isLoading } = useGetShortenUrlList(ownerId ?? "");
+  const urlsData = data?.data || [];
 
   // Pagination state (only if limit is not set)
   const [page, setPage] = useState(0);
@@ -99,7 +100,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
     );
   }
 
-  if (data?.urls.length === 0) {
+  if (urlsData.length === 0) {
     return (
       <div className="text-center space-y-6 py-20 border border-dashed rounded-md">
         <div className="mx-auto w-fit">
@@ -118,7 +119,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
   }
 
   if (limit) {
-    const sortedData = data?.urls
+    const sortedData = urlsData
       .sort(
         (
           a: { createdAt: string | number | Date },
@@ -162,7 +163,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
     );
   }
 
-  const sortedData = data?.urls.sort(
+  const sortedData = urlsData.sort(
     (
       a: { createdAt: string | number | Date },
       b: { createdAt: string | number | Date }

@@ -90,11 +90,8 @@ export const UrlTracker = () => {
     }
   }, [ownerId]);
 
-  const {
-    data: shortenUrlList,
-    isLoading,
-    isError,
-  } = useGetShortenUrlList(ownerId ?? "");
+  const { data, isLoading, isError } = useGetShortenUrlList(ownerId ?? "");
+  const urlsData = data?.data || [];
 
   if (isLoading || isError) {
     return (
@@ -106,7 +103,7 @@ export const UrlTracker = () => {
     );
   }
 
-  const items = UrlTrackerItems(shortenUrlList?.urls || []);
+  const items = UrlTrackerItems(urlsData);
 
   return (
     <React.Fragment>
