@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 
 // Database initialization
 import { db } from "@/data/db";
@@ -10,27 +10,41 @@ import { eq } from "drizzle-orm";
 
 // Utility functions
 import { encrypt } from "@/utils/password";
+import { apiResponse } from "@/utils/response";
 
 export async function POST(request: Request) {
-  let newPassword: string | undefined;
-  const code = nanoid(6);
+  let newPassword: string | null;
+  const newCode = nanoid(6);
 
   const { ownerId, url, password } = await request.json();
+  newPassword = password ? encrypt(password) : null;
 
-  if (password) {
-    newPassword = encrypt(password);
+  try {
+    if (!newPassword) {
+      return apiResponse({
+        success: false,
+        message: "Password is required",
+        status: 400,
+      });
+    }
+
+    await db.insert(schema.urlSchema).values({
+      ownerId: ownerId,
+      code: newCode,
+      password: newPassword ?? null,
+      originalUrl: url,
+    });
+
+    return apiResponse({
+      data: `${process.env.NEXT_PUBLIC_APP_URL}/${newCode}`,
+      message: "URL shortened successfully",
+    });
+  } catch (error) {
+    return apiResponse({
+      success: false,
+      message: "Failed to shorten URL",
+    });
   }
-
-  await db.insert(schema.urlSchema).values({
-    ownerId: ownerId,
-    code: code,
-    password: newPassword ?? null,
-    originalUrl: url,
-  });
-
-  return NextResponse.json({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/${code}`,
-  });
 }
 
 export async function PATCH(request: NextRequest) {
