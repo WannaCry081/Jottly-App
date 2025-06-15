@@ -1,3 +1,5 @@
 export type Response<T> = {
-  urls: T;
+  success: boolean;
+  data: T;
+  message: string;
 };
