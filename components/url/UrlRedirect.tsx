@@ -59,16 +59,18 @@ export const UrlRedirectPage = ({ code }: { code: string }) => {
   const urlData = data?.data;
 
   useEffect(() => {
-    if (!urlData?.password && !isDialogOpen) setIsDialogOpen(false);
+    if (!urlData?.originalUrl) return;
+    if (urlData.password && isDialogOpen) return;
+    if (!urlData.password && isDialogOpen) setIsDialogOpen(false);
+
+    setCountdown(5);
 
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          if (urlData?.originalUrl) {
-            updateClicks(code);
-            router.push(urlData?.originalUrl);
-          }
+          updateClicks(code);
+          router.push(urlData.originalUrl);
           return 0;
         }
         return prev - 1;
