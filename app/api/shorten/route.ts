@@ -76,14 +76,14 @@ export async function PATCH(request: NextRequest) {
 
     const newClicks = (existing[0].clicks ?? 0) + 1;
 
-    await db
+    const response = await db
       .update(schema.urlSchema)
       .set({ clicks: newClicks })
       .where(eq(schema.urlSchema.code, code));
 
     return apiResponse({
+      data: response,
       message: "Clicks updated successfully",
-      status: 204,
     });
   } catch (error) {
     return apiResponse({
