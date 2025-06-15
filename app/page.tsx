@@ -5,6 +5,7 @@ import { Link as LinkIcon, MoveRight, Info, Github } from "lucide-react";
 // Components
 import { UrlForm } from "@/components/url/UrlForm";
 import { UrlList } from "@/components/url/UrlList";
+import { UrlTracker } from "@/components/url/URLTracker";
 import {
   Dialog,
   DialogContent,
@@ -73,7 +74,12 @@ export default async function Page() {
       </header>
       <main className=" max-w-xl mx-auto">
         <div className="p-4 py-2 space-y-6">
+          <div className="grid grid-cols-4 gap-2">
+            <UrlTracker />
+          </div>
+
           <UrlForm />
+
           <section className="space-y-4">
             <div className="leading-tight">
               <h2 className="text-lg md:text-xl font-medium">Recent Links</h2>
