@@ -41,8 +41,9 @@ import {
   DialogFooter,
   DialogDescription,
 } from "../ui/dialog";
+import { Url } from "@/types/url";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 4;
 
 export const UrlList = ({ limit }: { limit?: number }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -95,7 +96,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
     );
   }
 
-  if (data.urls.length === 0) {
+  if (data?.urls.length === 0) {
     return (
       <div className="text-center space-y-6 py-20 border border-dashed rounded-md">
         <div className="mx-auto w-fit">
@@ -114,7 +115,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
   }
 
   if (limit) {
-    const sortedData = data.urls
+    const sortedData = data?.urls
       .sort(
         (
           a: { createdAt: string | number | Date },
@@ -130,14 +131,8 @@ export const UrlList = ({ limit }: { limit?: number }) => {
     return (
       <React.Fragment>
         <ul className="space-y-2">
-          {sortedData.map(
-            ({
-              id,
-              originalUrl,
-              code,
-              password,
-              clicks,
-            }: (typeof data.urls)[0]) => {
+          {sortedData?.map(
+            ({ id, originalUrl, code, password, clicks }: Url) => {
               const decryptedPassword = password
                 ? decrypt(password ?? "").toString()
                 : null;
@@ -164,47 +159,39 @@ export const UrlList = ({ limit }: { limit?: number }) => {
     );
   }
 
-  const sortedData = data.urls.sort(
+  const sortedData = data?.urls.sort(
     (
       a: { createdAt: string | number | Date },
       b: { createdAt: string | number | Date }
     ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
-  const totalPages = Math.ceil(sortedData.length / PAGE_SIZE);
-  const pagedData = sortedData.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const totalPages = Math.ceil((sortedData?.length ?? 0) / PAGE_SIZE);
+  const pagedData = sortedData?.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
     <React.Fragment>
       <ul className="space-y-2">
-        {pagedData.map(
-          ({
-            id,
-            originalUrl,
-            code,
-            password,
-            clicks,
-          }: (typeof data.urls)[0]) => {
-            const decryptedPassword = password
-              ? decrypt(password ?? "").toString()
-              : null;
-            return (
-              <li key={id}>
-                <UrlListItem
-                  baseUrl={baseUrl}
-                  originalUrl={originalUrl}
-                  code={code}
-                  password={decryptedPassword}
-                  clicks={clicks}
-                  qrCodeUrl={qrCodeUrl}
-                  selectedQR={selectedQR}
-                  generateQRCode={generateQRCode}
-                  setQrCodeUrl={setQrCodeUrl}
-                  setSelectedQR={setSelectedQR}
-                />
-              </li>
-            );
-          }
-        )}
+        {pagedData?.map(({ id, originalUrl, code, password, clicks }: Url) => {
+          const decryptedPassword = password
+            ? decrypt(password ?? "").toString()
+            : null;
+          return (
+            <li key={id}>
+              <UrlListItem
+                baseUrl={baseUrl}
+                originalUrl={originalUrl}
+                code={code}
+                password={decryptedPassword}
+                clicks={clicks}
+                qrCodeUrl={qrCodeUrl}
+                selectedQR={selectedQR}
+                generateQRCode={generateQRCode}
+                setQrCodeUrl={setQrCodeUrl}
+                setSelectedQR={setSelectedQR}
+              />
+            </li>
+          );
+        })}
       </ul>
       <Pagination className="mt-4">
         <PaginationContent>
