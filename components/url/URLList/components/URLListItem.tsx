@@ -156,8 +156,10 @@ export const UrlListItem = ({
         </div>
 
         {password && (
-          <CardFooter className="bg-primary/5 px-4 py-2 text-xs text-center font-medium relative">
-            {password}
+          <CardFooter className="bg-primary/5 px-4 py-2 relative">
+            <span className="text-xs font-medium inline-block text-center w-full ">
+              {password}
+            </span>
             <PasswordOverlay
               visible={visible}
               onToggle={() => setVisible((v) => !v)}
