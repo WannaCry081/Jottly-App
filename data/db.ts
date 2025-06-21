@@ -4,14 +4,14 @@ import { drizzle } from "drizzle-orm/node-postgres";
 // Schemas
 import * as schema from "./schemas";
 
-if (!process.env.NEXT_PUBLIC_DATABASE_URL) {
-  throw new Error("Missing NEXT_PUBLIC_DATABASE_URL env var");
+if (!process.env.DATABASE_URL) {
+  throw new Error("Missing 'DATABASE_URL' env var");
 }
 
-const isProduction = process.env.NEXT_PUBLIC_ENV === "production";
+const isProduction = process.env.NODE_ENV === "production";
 
 const pool = new Pool({
-  connectionString: process.env.NEXT_PUBLIC_DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: isProduction ? { rejectUnauthorized: false } : false,
 });
 

@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Info, Loader2Icon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateShortenUrl } from "@/hooks/useCreateShortenUrl";
 
 // UI Components
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Form,
   FormControl,
@@ -18,22 +18,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Switch } from "../ui/switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import PasswordInput from "../origin/password-input";
+} from "../../ui/form";
+import { Input } from "../../ui/input";
+import { Switch } from "../../ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
+import PasswordInput from "../../origin/password-input";
 
 // Utility functions
 import { cn } from "@/lib/utils";
-import { generateRandomID } from "@/utils/generator";
 
 const formSchema = z.object({
   url: z.string().url("Please enter a valid URL").min(1, "URL is required"),
   password: z.string().optional(),
 });
 
-export const UrlForm = () => {
+const URLForm = () => {
   const { isLoading, isError, createShortenUrl } = useCreateShortenUrl();
   const isPending = isLoading || isError;
 
@@ -56,14 +55,6 @@ export const UrlForm = () => {
 
     form.reset();
   }
-
-  useEffect(() => {
-    const id = localStorage.getItem("jotty-id");
-    if (!id) {
-      const newId = generateRandomID();
-      localStorage.setItem("jotty-id", newId);
-    }
-  }, []);
 
   return (
     <Form {...form}>
@@ -138,3 +129,5 @@ export const UrlForm = () => {
     </Form>
   );
 };
+
+export default URLForm;

@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Link as LinkIcon, MoveRight, Info, Github } from "lucide-react";
 
 // Custom Components
-import { UrlForm } from "@/components/url/UrlForm";
-import { UrlList } from "@/components/url/UrlList";
-import { UrlTracker } from "@/components/url/URLTracker";
+import URLForm from "@/components/url/URLForm";
+import URLList from "@/components/url/URLList";
+import URLTracker from "@/components/url/URLTracker";
 
 // UI Components
 import {
@@ -73,11 +73,11 @@ export default async function Page() {
       </header>
       <main className=" max-w-xl mx-auto">
         <div className="p-4 py-2 space-y-6">
-          <div className="grid grid-cols-4 gap-2">
-            <UrlTracker />
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <URLTracker />
           </div>
 
-          <UrlForm />
+          <URLForm />
 
           <section className="space-y-4">
             <div className="leading-tight">
@@ -86,7 +86,7 @@ export default async function Page() {
                 Access your latest shortened links here.
               </span>
             </div>
-            <UrlList limit={3} />
+            <URLList limit={3} />
           </section>
           <Dialog>
             <div className="w-full grid place-items-center">
@@ -107,12 +107,13 @@ export default async function Page() {
                   <Info />
                   <AlertTitle>URL Expiration Notice</AlertTitle>
                   <AlertDescription>
-                    All shortened URLs created on Jottly will expire after 30.
+                    All shortened URLs created on Jottly will expire after 30
+                    days.
                   </AlertDescription>
                 </Alert>
               </DialogHeader>
               <div>
-                <UrlList />
+                <URLList />
               </div>
             </DialogContent>
           </Dialog>

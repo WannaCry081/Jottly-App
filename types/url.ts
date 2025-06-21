@@ -1,10 +1,10 @@
-export type UrlRequest = {
+export type URLRequest = {
   ownerId: string;
   url: string;
   password?: string;
 };
 
-export type Url = {
+export type URL = {
   id: string;
   ownerId: string;
   originalUrl: string;

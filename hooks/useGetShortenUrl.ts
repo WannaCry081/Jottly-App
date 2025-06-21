@@ -5,13 +5,13 @@ import { urlService } from "@/services";
 
 // Types
 import type { Response } from "@/types/response";
-import type { Url } from "@/types/url";
+import type { URL } from "@/types/url";
 
 // Constants
 import { URL_KEY } from "@/constants/query";
 
 export const useGetShortenUrl = (code: string) => {
-  const { data, error, isLoading, isError } = useQuery<Response<Url>, Error>({
+  const { data, error, isLoading, isError } = useQuery<Response<URL>, Error>({
     queryKey: [URL_KEY, code],
     queryFn: async () => {
       const response = await urlService.retrieve(code);
