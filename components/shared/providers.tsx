@@ -16,7 +16,7 @@ const queryClient = new QueryClient({
 });
 
 export const Providers = ({ children }: PropsWithChildren) => {
-  const env = process.env.NEXT_PUBLIC_ENVIRONMENT;
+  const env = process.env.NODE_ENV;
 
   return (
     <QueryClientProvider client={queryClient}>
