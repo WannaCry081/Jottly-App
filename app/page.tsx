@@ -107,7 +107,8 @@ export default async function Page() {
                   <Info />
                   <AlertTitle>URL Expiration Notice</AlertTitle>
                   <AlertDescription>
-                    All shortened URLs created on Jottly will expire after 30.
+                    All shortened URLs created on Jottly will expire after 30
+                    days.
                   </AlertDescription>
                 </Alert>
               </DialogHeader>
