@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 // Custom Components
-import { UrlRedirectPage } from "@/components/url/UrlRedirect";
+import { URLRedirect } from "@/components/url/URLRedirect";
 
 export const metadata: Metadata = {
   title: "Dynamic Code",
@@ -37,7 +37,7 @@ export default async function Page({
 
   return (
     <main>
-      <UrlRedirectPage code={code} />
+      <URLRedirect code={code} />
     </main>
   );
 }
