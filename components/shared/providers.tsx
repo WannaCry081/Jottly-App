@@ -1,11 +1,14 @@
 "use client";
 
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // UI Components
 import { Toaster } from "sonner";
+
+// Utility functions
+import { generateRandomID } from "@/utils/generator";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,6 +20,14 @@ const queryClient = new QueryClient({
 
 export const Providers = ({ children }: PropsWithChildren) => {
   const env = process.env.NODE_ENV;
+
+  useEffect(() => {
+    const id = localStorage.getItem("jotty-id");
+    if (!id) {
+      const newId = generateRandomID();
+      localStorage.setItem("jotty-id", newId);
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

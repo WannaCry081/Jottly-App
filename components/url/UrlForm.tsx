@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Info, Loader2Icon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -26,7 +26,6 @@ import PasswordInput from "../origin/password-input";
 
 // Utility functions
 import { cn } from "@/lib/utils";
-import { generateRandomID } from "@/utils/generator";
 
 const formSchema = z.object({
   url: z.string().url("Please enter a valid URL").min(1, "URL is required"),
@@ -56,14 +55,6 @@ export const UrlForm = () => {
 
     form.reset();
   }
-
-  useEffect(() => {
-    const id = localStorage.getItem("jotty-id");
-    if (!id) {
-      const newId = generateRandomID();
-      localStorage.setItem("jotty-id", newId);
-    }
-  }, []);
 
   return (
     <Form {...form}>
