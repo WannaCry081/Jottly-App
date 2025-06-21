@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jottly [Next.js]
 
-## Getting Started
+![Jottly Logo](./public/thumbnail.png)
 
-First, run the development server:
+**Jottly** is a modern, open-source URL shortener built with Next.js, Drizzle ORM, PostgreSQL, and more. Create, manage, and track short links with privacy and speed. No authentication required—just shorten and share!
+
+[Live Demo](https://jottly.vercel.app)
+
+## 🚀 Features
+
+- **Shorten URLs**: Instantly generate short links for any URL.
+- **Password Protection**: Secure your links with a password.
+- **Analytics**: Track clicks, total URLs, protected URLs, and average clicks.
+- **Expiration**: Links expire after 30 days for privacy.
+- **No Sign Up Needed**: Use all features without creating an account.
+- **Recent Links**: View your latest shortened URLs.
+- **QR Codes**: Download QR codes for your links.
+- **Copy to Clipboard**: Easily copy your short links.
+
+## 🛠️ Tech Stack
+
+- [Next.js](https://nextjs.org/)
+- [TanStack React Query](https://tanstack.com/query/latest)
+- [Axios](https://axios-http.com/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/)
+- [Supabase](https://supabase.com/) (optional for hosting)
+
+## 📦 Getting Started
+
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/WannaCry081/Jottly-App.git
+cd jottly-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install # or npm install or yarn install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Configure Environment Variables
 
-## Learn More
+- Copy `.env.example` to `.env` and fill in the required values:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cp .env.example .env
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Set your database URL and secret key.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Run with Docker (Recommended)
 
-## Deploy on Vercel
+```bash
+docker compose up
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Or run locally:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm dev
+```
+
+## 🧪 Usage
+
+- Visit [http://localhost:3000](http://localhost:3000) to use the app locally.
+- Shorten URLs, protect with passwords, and track analytics instantly.
+
+## 🤝 Contributing
+
+Contributions are welcome! To get started:
+
+1. **Fork** the repository
+2. **Create a new branch**: `git checkout -b feature/YourFeature`
+3. **Commit your changes**: `git commit -am 'feat: add new feature'`
+4. **Push to your branch**: `git push origin feature/YourFeature`
+5. \*\*Open a Pull Request`
+
+> Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
+
+## 📬 Contact
+
+- **Email**: liraedata59@gmail.com
+- **GitHub**: [WannaCry081](https://github.com/WannaCry081)
