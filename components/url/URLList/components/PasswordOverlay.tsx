@@ -1,6 +1,7 @@
 import React from "react";
 import { Lock } from "lucide-react";
 
+// UI Components
 import {
   Tooltip,
   TooltipTrigger,
@@ -8,15 +9,16 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 
+// Utility function
 import { cn } from "@/lib/utils";
+
+// Types
+import type { PasswordOverlayProps } from "../types";
 
 export const PasswordOverlay = ({
   visible,
   onToggle,
-}: {
-  visible: boolean;
-  onToggle: () => void;
-}) => (
+}: PasswordOverlayProps) => (
   <Tooltip>
     <TooltipTrigger asChild>
       <Button
