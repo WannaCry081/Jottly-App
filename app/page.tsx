@@ -5,7 +5,7 @@ import { Link as LinkIcon, MoveRight, Info, Github } from "lucide-react";
 // Custom Components
 import { UrlForm } from "@/components/url/UrlForm";
 import { UrlList } from "@/components/url/UrlList";
-import { UrlTracker } from "@/components/url/URLTracker";
+import URLTracker from "@/components/url/URLTracker";
 
 // UI Components
 import {
@@ -74,7 +74,7 @@ export default async function Page() {
       <main className=" max-w-xl mx-auto">
         <div className="p-4 py-2 space-y-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <UrlTracker />
+            <URLTracker />
           </div>
 
           <UrlForm />
