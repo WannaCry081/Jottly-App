@@ -8,7 +8,7 @@ import { urlService } from "@/services";
 
 // Types
 import type { Response } from "@/types/response";
-import type { Url } from "@/types/url";
+import type { URL } from "@/types/url";
 
 // Constants
 import { URL_KEY } from "@/constants/query";
@@ -16,7 +16,7 @@ import { URL_KEY } from "@/constants/query";
 export const useUpdateShortenUrlClicks = () => {
   const queryClient = useQueryClient();
 
-  const mutate = useMutation<Response<Url>, Error, string>(
+  const mutate = useMutation<Response<URL>, Error, string>(
     async (code: string) => {
       const response = await urlService.partialUpdate(code);
       return response.data;

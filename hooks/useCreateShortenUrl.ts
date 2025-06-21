@@ -8,7 +8,7 @@ import { urlService } from "@/services";
 
 // Types
 import type { Response } from "@/types/response";
-import type { Url, UrlRequest } from "@/types/url";
+import type { URL, URLRequest } from "@/types/url";
 
 // Constants
 import { URL_KEY } from "@/constants/query";
@@ -16,7 +16,7 @@ import { URL_KEY } from "@/constants/query";
 export const useCreateShortenUrl = () => {
   const queryClient = useQueryClient();
 
-  const mutation = useMutation<Response<Url>, Error, UrlRequest>(
+  const mutation = useMutation<Response<URL>, Error, URLRequest>(
     async (request) => {
       const response = await urlService.create(request);
       return response.data;

@@ -44,7 +44,7 @@ import { decrypt } from "@/utils/password";
 import { cn } from "@/lib/utils";
 
 // Types
-import { Url } from "@/types/url";
+import { URL } from "@/types/url";
 
 const PAGE_SIZE = 4;
 
@@ -136,7 +136,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
       <React.Fragment>
         <ul className="space-y-2">
           {sortedData?.map(
-            ({ id, originalUrl, code, password, clicks }: Url) => {
+            ({ id, originalUrl, code, password, clicks }: URL) => {
               const decryptedPassword = password
                 ? decrypt(password ?? "").toString()
                 : null;
@@ -175,7 +175,7 @@ export const UrlList = ({ limit }: { limit?: number }) => {
   return (
     <React.Fragment>
       <ul className="space-y-2">
-        {pagedData?.map(({ id, originalUrl, code, password, clicks }: Url) => {
+        {pagedData?.map(({ id, originalUrl, code, password, clicks }: URL) => {
           const decryptedPassword = password
             ? decrypt(password ?? "").toString()
             : null;
