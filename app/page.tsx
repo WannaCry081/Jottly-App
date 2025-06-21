@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Link as LinkIcon, MoveRight, Info, Github } from "lucide-react";
 
 // Custom Components
-import { UrlForm } from "@/components/url/UrlForm";
+import URLForm from "@/components/url/URLForm";
 import { UrlList } from "@/components/url/UrlList";
 import URLTracker from "@/components/url/URLTracker";
 
@@ -77,7 +77,7 @@ export default async function Page() {
             <URLTracker />
           </div>
 
-          <UrlForm />
+          <URLForm />
 
           <section className="space-y-4">
             <div className="leading-tight">

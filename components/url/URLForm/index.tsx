@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateShortenUrl } from "@/hooks/useCreateShortenUrl";
 
 // UI Components
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Form,
   FormControl,
@@ -18,11 +18,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Switch } from "../ui/switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import PasswordInput from "../origin/password-input";
+} from "../../ui/form";
+import { Input } from "../../ui/input";
+import { Switch } from "../../ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
+import PasswordInput from "../../origin/password-input";
 
 // Utility functions
 import { cn } from "@/lib/utils";
@@ -32,7 +32,7 @@ const formSchema = z.object({
   password: z.string().optional(),
 });
 
-export const UrlForm = () => {
+const URLForm = () => {
   const { isLoading, isError, createShortenUrl } = useCreateShortenUrl();
   const isPending = isLoading || isError;
 
@@ -129,3 +129,5 @@ export const UrlForm = () => {
     </Form>
   );
 };
+
+export default URLForm;
