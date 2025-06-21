@@ -4,7 +4,7 @@ import { Link as LinkIcon, MoveRight, Info, Github } from "lucide-react";
 
 // Custom Components
 import URLForm from "@/components/url/URLForm";
-import { UrlList } from "@/components/url/UrlList";
+import URLList from "@/components/url/URLList";
 import URLTracker from "@/components/url/URLTracker";
 
 // UI Components
@@ -86,7 +86,7 @@ export default async function Page() {
                 Access your latest shortened links here.
               </span>
             </div>
-            <UrlList limit={3} />
+            <URLList limit={3} />
           </section>
           <Dialog>
             <div className="w-full grid place-items-center">
@@ -112,7 +112,7 @@ export default async function Page() {
                 </Alert>
               </DialogHeader>
               <div>
-                <UrlList />
+                <URLList />
               </div>
             </DialogContent>
           </Dialog>
