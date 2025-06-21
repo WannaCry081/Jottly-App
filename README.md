@@ -2,7 +2,7 @@
 
 ![Jottly Logo](./public/thumbnail.png)
 
-**Jottly** is a modern, open-source URL shortener built with Next.js, Drizzle ORM, PostgreSQL, and more. Create, manage, and track short links with privacy and speed. No authentication required—just shorten and share!
+**Jottly** is a modern, open-source URL shortener built with Next.js, Drizzle ORM, and PostgreSQL. Create, manage, and track short links with privacy and speed—no authentication required!
 
 [Live Demo](https://jottly.vercel.app)
 
@@ -51,7 +51,7 @@ pnpm install # or npm install or yarn install
 cp .env.example .env
 ```
 
-- Set your database URL and secret key.
+- Set your database URL and secret key in `.env`.
 
 ### 4. Run with Docker (Recommended)
 
@@ -59,7 +59,13 @@ cp .env.example .env
 docker compose up
 ```
 
-Or run locally:
+After the containers are up, run the following to push the database schema:
+
+```bash
+docker-compose exec jottly-app pnpm db:push
+```
+
+#### Or Run Locally
 
 ```bash
 pnpm dev
@@ -78,7 +84,7 @@ Contributions are welcome! To get started:
 2. **Create a new branch**: `git checkout -b feature/YourFeature`
 3. **Commit your changes**: `git commit -am 'feat: add new feature'`
 4. **Push to your branch**: `git push origin feature/YourFeature`
-5. \*\*Open a Pull Request`
+5. **Open a Pull Request**
 
 > Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
 
