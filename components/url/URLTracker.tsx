@@ -28,7 +28,7 @@ type UrlTrackerItemType = {
   description: string;
   data: number;
   style: {
-    textColor: string;
+    iconColor: string;
   };
 };
 
@@ -47,7 +47,7 @@ const UrlTrackerItems = (data: Url[]) => {
       description: "Links created",
       data: totalUrls,
       style: {
-        textColor: "text-blue-600 dark:text-blue-400",
+        iconColor: "text-blue-600 dark:text-blue-400",
       },
     },
     {
@@ -56,7 +56,7 @@ const UrlTrackerItems = (data: Url[]) => {
       description: "Password secured",
       data: totalProtectedUrls,
       style: {
-        textColor: "text-violet-600 dark:text-violet-400",
+        iconColor: "text-violet-600 dark:text-violet-400 ",
       },
     },
     {
@@ -65,7 +65,7 @@ const UrlTrackerItems = (data: Url[]) => {
       description: "Across all links",
       data: totalClicks,
       style: {
-        textColor: "text-green-600 dark:text-green-400",
+        iconColor: "text-green-600 dark:text-green-400",
       },
     },
     {
@@ -74,7 +74,7 @@ const UrlTrackerItems = (data: Url[]) => {
       description: "Per link average",
       data: avgClicks,
       style: {
-        textColor: "text-amber-600 dark:text-amber-400",
+        iconColor: "text-amber-600 dark:text-amber-400",
       },
     },
   ];
@@ -111,21 +111,36 @@ export const UrlTracker = () => {
         const IconComponent = icon;
 
         return (
-          <Card key={index} className="py-2 rounded-md shadow-none">
-            <CardContent className="px-2">
-              <div className="text-center sm:text-end">
-                <div className="inline-flex sm:hidden items-center justify-center size-10 rounded-full bg-muted-foreground/5 my-2">
-                  <IconComponent className={cn("size-4.5", style.textColor)} />
+          <Card
+            key={index}
+            className="py-3.5 rounded-md shadow-none overflow-hidden"
+          >
+            <CardContent className="px-2 flex-1 grid place-items-center">
+              <div className="w-full space-y-1 sm:space-y-2">
+                <div className="flex items-start justify-between sm:justify-end ">
+                  <div className="relative sm:hidden">
+                    <div className="grid place-items-center size-38 bg-muted-foreground/5 rounded-full absolute -top-7 -left-14">
+                      <div className="grid place-items-center size-24 bg-muted-foreground/5 rounded-full">
+                        <div className="grid place-items-center size-12 bg-muted-foreground/5 rounded-full">
+                          <IconComponent
+                            className={cn(style.iconColor, "size-4")}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span className="font-semibold text-3xl text-ellipsis overflow-hidden w-20 text-end sm:flex-1">
+                    {data}
+                  </span>
                 </div>
-
-                <div className="text-lg font-semibold sm:text-4xl w-full overflow-hidden text-ellipsis sm:mb-1.5">
-                  {data}
-                </div>
-                <div className="inline-flex gap-1 text-xs text-muted-foreground">
+                <div className="text-end flex items-center justify-end">
                   <IconComponent
-                    className={cn("hidden sm:block size-4", style.textColor)}
+                    className={cn(
+                      style.iconColor,
+                      "hidden size-4 sm:inline-block mr-1"
+                    )}
                   />
-                  {title}
+                  <span className="text-xs text-muted-foreground">{title}</span>
                 </div>
               </div>
             </CardContent>

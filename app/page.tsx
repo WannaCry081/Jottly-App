@@ -73,7 +73,7 @@ export default async function Page() {
       </header>
       <main className=" max-w-xl mx-auto">
         <div className="p-4 py-2 space-y-6">
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <UrlTracker />
           </div>
 
