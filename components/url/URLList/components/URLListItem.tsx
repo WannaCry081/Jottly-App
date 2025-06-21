@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Copy, QrCode } from "lucide-react";
-import { toast } from "sonner";
 import { useState } from "react";
+import { toast } from "sonner";
+import { Copy, QrCode } from "lucide-react";
 
-// UI
+// UI Components
 import {
   Card,
   CardContent,
@@ -14,8 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipTrigger,
@@ -30,23 +28,17 @@ import {
   DialogFooter,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Custom Components
 import { PasswordOverlay } from "./PasswordOverlay";
 
-type Props = {
-  baseUrl: string;
-  originalUrl: string;
-  code: string;
-  password?: string | null;
-  clicks: number;
-  qrCodeUrl: string | null;
-  selectedQR: string | null;
-  generateQRCode: (url: string) => void;
-  resetQRCode: () => void;
-};
+// Types
+import type { URLListItemProps } from "../types";
 
-export const UrlListItem = ({
+export const URLListItem = ({
   baseUrl,
   originalUrl,
   code,
@@ -56,7 +48,7 @@ export const UrlListItem = ({
   selectedQR,
   generateQRCode,
   resetQRCode,
-}: Props) => {
+}: URLListItemProps) => {
   const [visible, setVisible] = useState(true);
   const shortUrl = `${baseUrl}/${code}`;
 
