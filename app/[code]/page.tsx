@@ -32,7 +32,7 @@ export default async function Page({
   params,
 }: {
   params: Promise<{ code: string }>;
-}) {
+}): Promise<React.ReactElement> {
   const { code } = await params;
 
   return (

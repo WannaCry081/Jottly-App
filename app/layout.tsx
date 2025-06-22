@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 
@@ -25,7 +26,7 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): React.ReactElement {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className} antialiased`}>

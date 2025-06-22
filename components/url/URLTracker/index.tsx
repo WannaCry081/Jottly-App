@@ -14,7 +14,7 @@ import { URLTrackerItems } from "./utils/URLTrackerItems.util";
 // Types
 import { URLTrackerCard } from "./components/URLTrackerCard";
 
-const URLTracker = () => {
+const URLTracker = (): React.ReactElement => {
   const [ownerId, setOwnerId] = useState<string | null>(null);
 
   useEffect(() => {

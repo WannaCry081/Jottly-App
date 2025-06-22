@@ -1,12 +1,15 @@
-import SimpleCrypto from "simple-crypto-js";
+import SimpleCrypto, {
+  type CipherText,
+  type PlainData,
+} from "simple-crypto-js";
 
 const key = process.env.NEXT_PUBLIC_SECRET_KEY;
 const simpleCrypto = new SimpleCrypto(key);
 
-export function encrypt(text: string) {
+export function encrypt(text: string): CipherText {
   return simpleCrypto.encrypt(text);
 }
 
-export function decrypt(cipher: string) {
+export function decrypt(cipher: string): PlainData {
   return simpleCrypto.decrypt(cipher);
 }

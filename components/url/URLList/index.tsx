@@ -1,9 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useGetShortenUrlList } from "@/hooks";
-import { decrypt } from "@/utils/password";
 import { Link as LinkIcon } from "lucide-react";
+
+// Hooks
+import { useGetShortenUrlList } from "@/hooks";
+
+// Utility functions
+import { decrypt } from "@/utils/password";
+
+// Types
+import type { URL } from "@/types/url";
 
 // UI Components
 import {
@@ -15,19 +22,16 @@ import {
 } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 
+//  Hooks
+import { useQRCode } from "./hooks/useQRCode";
+import { usePagination } from "./hooks/usePagination";
+
 // Custom Components
 import { URLListItem } from "./components/URLListItem";
 
-// Hooks
-import { usePagination } from "./hooks/usePagination";
-import { useQRCode } from "./hooks/useQRCode";
-
-// Types
-import type { URL } from "@/types/url";
-
 const PAGE_SIZE = 4;
 
-const URLList = ({ limit }: { limit?: number }) => {
+const URLList = ({ limit }: { limit?: number }): React.ReactElement => {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL!;
   const [ownerId, setOwnerId] = useState<string | null>(null);
 
@@ -39,10 +43,8 @@ const URLList = ({ limit }: { limit?: number }) => {
   const { data, isLoading } = useGetShortenUrlList(ownerId ?? "");
   const urls = data?.data ?? [];
 
-  const { page, totalPages, goNext, goPrevious, pagedData } = usePagination(
-    urls.length,
-    PAGE_SIZE
-  );
+  const { page, totalPages, goNext, goPrevious, pagedData } =
+    usePagination<URL>(urls.length, PAGE_SIZE);
   const { qrCodeUrl, selectedQR, generate, reset } = useQRCode();
 
   if (isLoading) {
@@ -76,14 +78,14 @@ const URLList = ({ limit }: { limit?: number }) => {
   }
 
   const sorted = urls.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
-  const displayUrls = limit ? sorted.slice(0, limit) : pagedData(sorted);
+  const displayUrls: URL[] = limit ? sorted.slice(0, limit) : pagedData(sorted);
 
   return (
     <>
       <ul className="space-y-2">
-        {displayUrls.map(({ id, originalUrl, code, password, clicks }: URL) => (
+        {displayUrls.map(({ id, originalUrl, code, password, clicks }) => (
           <li key={id}>
             <URLListItem
               baseUrl={baseUrl}

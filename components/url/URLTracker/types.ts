@@ -1,6 +1,6 @@
 import { type LucideIcon } from "lucide-react";
 
-export type URLTrackerItemsProps = {
+export type URLTrackerItemsReturnType = {
   icon: LucideIcon;
   title: string;
   description: string;

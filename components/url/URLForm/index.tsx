@@ -9,8 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // Hooks
 import { useCreateShortenUrl } from "@/hooks/useCreateShortenUrl";
 
+// Utility functions
+import { cn } from "@/lib/utils";
+
 // UI Components
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -18,21 +21,22 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui/form";
-import { Input } from "../../ui/input";
-import { Switch } from "../../ui/switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
-import PasswordInput from "../../origin/password-input";
-
-// Utility functions
-import { cn } from "@/lib/utils";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import PasswordInput from "@/components/origin/password-input";
 
 const formSchema = z.object({
   url: z.string().url("Please enter a valid URL").min(1, "URL is required"),
   password: z.string().optional(),
 });
 
-const URLForm = () => {
+const URLForm = (): React.ReactElement => {
   const { isLoading, isError, createShortenUrl } = useCreateShortenUrl();
   const isPending = isLoading || isError;
 
@@ -46,7 +50,7 @@ const URLForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>): void {
     createShortenUrl({
       ownerId: localStorage.getItem("jotty-id") || "",
       url: values.url,
@@ -87,7 +91,7 @@ const URLForm = () => {
                   id="password-protection-label"
                   className={cn(
                     !isChecked ? "text-muted-foreground" : "text-primary",
-                    "inline-flex items-center gap-1"
+                    "inline-flex items-center gap-1",
                   )}
                 >
                   <span>Password Protection</span>

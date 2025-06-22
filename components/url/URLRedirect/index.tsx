@@ -11,7 +11,7 @@ import { useRedirectWithCountdown } from "./hooks/useRedirectWithCountdown";
 // Custom Components
 import { PasswordDialog } from "./components/PasswordDialog";
 
-export const URLRedirect = ({ code }: { code: string }) => {
+export const URLRedirect = ({ code }: { code: string }): React.ReactElement => {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(true);
 

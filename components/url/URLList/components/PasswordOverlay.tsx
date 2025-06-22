@@ -18,7 +18,7 @@ import type { PasswordOverlayProps } from "../types";
 export const PasswordOverlay = ({
   visible,
   onToggle,
-}: PasswordOverlayProps) => (
+}: PasswordOverlayProps): React.ReactElement => (
   <Tooltip>
     <TooltipTrigger asChild>
       <Button
@@ -27,7 +27,7 @@ export const PasswordOverlay = ({
         aria-label={visible ? "Hide password" : "Show password"}
         className={cn(
           "w-full h-full absolute backdrop-blur-sm z-10 inset-0 grid place-items-center hover:bg-transparent",
-          visible ? "" : "backdrop-blur-none"
+          visible ? "" : "backdrop-blur-none",
         )}
       >
         <Lock className={cn("size-3.5", visible ? "" : "hidden")} />

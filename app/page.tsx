@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-export default async function Page() {
+export default async function Page(): Promise<React.ReactElement> {
   return (
     <React.Fragment>
       <header className="max-w-xl mx-auto">
