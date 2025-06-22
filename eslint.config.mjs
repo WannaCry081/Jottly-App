@@ -57,7 +57,7 @@ const eslintConfig = [
             "internal",
             ["parent", "sibling", "index"],
           ],
-          "newlines-between": "always",
+          "newlines-between": "ignore",
         },
       ],
       "import/no-unresolved": "error",
