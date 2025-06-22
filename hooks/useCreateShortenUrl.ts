@@ -13,7 +13,14 @@ import type { URL, URLRequest } from "@/types/url";
 // Constants
 import { URL_KEY } from "@/constants/query";
 
-export const useCreateShortenUrl = () => {
+type CreateShortenUrlReturnType = {
+  createShortenUrl: (request: URLRequest) => void;
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+};
+
+export const useCreateShortenUrl = (): CreateShortenUrlReturnType => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<Response<URL>, Error, URLRequest>(
@@ -40,14 +47,13 @@ export const useCreateShortenUrl = () => {
           description: error.message,
         });
       },
-    }
+    },
   );
 
   return {
     createShortenUrl: mutation.mutate,
     isLoading: mutation.isLoading,
     isError: mutation.isError,
-    data: mutation.data,
     error: mutation.error,
   };
 };

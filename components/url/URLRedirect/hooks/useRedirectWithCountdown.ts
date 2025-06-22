@@ -11,7 +11,7 @@ export const useRedirectWithCountdown = ({
   isDialogOpen,
   code,
   router,
-}: useRedirectWithCountdownProps) => {
+}: useRedirectWithCountdownProps): { countdown: number } => {
   const [countdown, setCountdown] = useState(5);
   const { updateClicks } = useUpdateShortenUrlClicks();
 
@@ -30,7 +30,7 @@ export const useRedirectWithCountdown = ({
       });
     }, 1000);
 
-    return () => clearInterval(timer);
+    return (): void => clearInterval(timer);
   }, [urlData, isDialogOpen, code, router, updateClicks]);
 
   return { countdown };

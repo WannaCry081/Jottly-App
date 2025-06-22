@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { decrypt } from "@/utils/password";
 import { Info } from "lucide-react";
 
 // UI Components
@@ -29,6 +28,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 // Custom Components
 import PasswordInput from "@/components/origin/password-input";
 
+// Utility functions
+import { decrypt } from "@/utils/password";
+
 // Types
 import type { PasswordDialogProps } from "../types";
 
@@ -39,13 +41,13 @@ const formSchema = z.object({
 export const PasswordDialog = ({
   encryptedPassword,
   onSuccess,
-}: PasswordDialogProps) => {
+}: PasswordDialogProps): React.ReactElement => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { password: "" },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>): void => {
     const decrypted = decrypt(encryptedPassword);
     if (values.password === decrypted) {
       onSuccess();

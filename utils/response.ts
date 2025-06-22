@@ -8,7 +8,9 @@ export function apiResponse<T>({
   data,
   message = "",
   status,
-}: Partial<Response<T>> & { status?: number }) {
+}: Partial<Response<T>> & { status?: number }): ReturnType<
+  typeof NextResponse.json
+> {
   return NextResponse.json(
     {
       success,
@@ -17,6 +19,6 @@ export function apiResponse<T>({
     },
     {
       status: status ?? (success ? 200 : 500),
-    }
+    },
   );
 }

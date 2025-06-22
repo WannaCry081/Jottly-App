@@ -1,11 +1,18 @@
 import { useState } from "react";
 import QRCode from "qrcode";
 
-export const useQRCode = () => {
+type QRCodeReturnType = {
+  qrCodeUrl: string | null;
+  selectedQR: string | null;
+  generate: (shortUrl: string) => Promise<void>;
+  reset: () => void;
+};
+
+export const useQRCode = (): QRCodeReturnType => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const [selectedQR, setSelectedQR] = useState<string | null>(null);
 
-  const generate = async (shortUrl: string) => {
+  const generate = async (shortUrl: string): Promise<void> => {
     try {
       const qr = await QRCode.toDataURL(shortUrl, {
         width: 256,
@@ -19,7 +26,7 @@ export const useQRCode = () => {
     }
   };
 
-  const reset = () => {
+  const reset = (): void => {
     setQrCodeUrl(null);
     setSelectedQR(null);
   };

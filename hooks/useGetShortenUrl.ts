@@ -10,7 +10,14 @@ import type { URL } from "@/types/url";
 // Constants
 import { URL_KEY } from "@/constants/query";
 
-export const useGetShortenUrl = (code: string) => {
+type GetShortenUrlListReturnType = {
+  data?: Response<URL>;
+  error: Error | null;
+  isLoading: boolean;
+  isError: boolean;
+};
+
+export const useGetShortenUrl = (code: string): GetShortenUrlListReturnType => {
   const { data, error, isLoading, isError } = useQuery<Response<URL>, Error>({
     queryKey: [URL_KEY, code],
     queryFn: async () => {

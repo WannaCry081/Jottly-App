@@ -4,7 +4,7 @@ import { MoveLeft } from "lucide-react";
 // UI Components
 import { Button } from "@/components/ui/button";
 
-export default function NotFound() {
+export default function NotFound(): React.ReactElement {
   return (
     <main className="flex items-center justify-center h-screen bg-background p-4">
       <div className="text-center">

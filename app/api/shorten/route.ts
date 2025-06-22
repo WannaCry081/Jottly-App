@@ -1,18 +1,18 @@
 import { nanoid } from "nanoid";
 import { type NextRequest } from "next/server";
+import { eq } from "drizzle-orm"; // Moved up per import/order
 
 // Database initialization
 import { db } from "@/data/db";
 
 // Schemas
 import * as schema from "@/data/schemas";
-import { eq } from "drizzle-orm";
 
 // Utility functions
 import { encrypt } from "@/utils/password";
 import { apiResponse } from "@/utils/response";
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<Response> {
   const newCode = nanoid(6);
 
   const { ownerId, url, password } = await request.json();
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function PATCH(request: NextRequest): Promise<Response> {
   const searchParams = request.nextUrl.searchParams;
   const code = searchParams.get("code");
 
@@ -87,7 +87,7 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<Response> {
   const searchParams = request.nextUrl.searchParams;
 
   const code = searchParams.get("code");

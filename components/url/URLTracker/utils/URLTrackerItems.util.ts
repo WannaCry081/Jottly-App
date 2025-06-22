@@ -1,9 +1,10 @@
 import { Link2, MousePointer, Shield, ChartColumn } from "lucide-react";
 
 // Types
-import { URL } from "@/types/url";
+import type { URL } from "@/types/url";
+import type { URLTrackerItemsReturnType } from "../types";
 
-export const URLTrackerItems = (data: URL[]) => {
+export const URLTrackerItems = (data: URL[]): URLTrackerItemsReturnType[] => {
   const totalUrls = data.length;
   const totalProtectedUrls =
     data.filter(({ password }) => password).length || 0;

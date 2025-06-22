@@ -10,7 +10,7 @@ import { Toaster } from "sonner";
 // Utility functions
 import { generateRandomID } from "@/utils/generator";
 
-export const Providers = ({ children }: PropsWithChildren) => {
+export const Providers = ({ children }: PropsWithChildren): React.ReactNode => {
   const env = process.env.NODE_ENV;
 
   const [queryClient] = useState(
@@ -21,7 +21,7 @@ export const Providers = ({ children }: PropsWithChildren) => {
             staleTime: 1000 * 60 * 5,
           },
         },
-      })
+      }),
   );
 
   useEffect(() => {

@@ -7,19 +7,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 // Types
-import type { URLTrackerItemsProps } from "../types";
+import type { URLTrackerItemsReturnType as URLTrackerItemsProps } from "../types";
 
 export const URLTrackerCard = ({
   items,
 }: {
   items: URLTrackerItemsProps[];
-}) => {
+}): React.ReactElement => {
   return (
     <React.Fragment>
       {items.map(
         (
           { icon: IconComponent, title, data, style }: URLTrackerItemsProps,
-          index: number
+          index: number,
         ) => (
           <Card
             key={index}
@@ -47,7 +47,7 @@ export const URLTrackerCard = ({
                   <IconComponent
                     className={cn(
                       style.iconColor,
-                      "hidden size-4 sm:inline-block mr-1"
+                      "hidden size-4 sm:inline-block mr-1",
                     )}
                   />
                   <span className="text-xs text-muted-foreground">{title}</span>
@@ -55,7 +55,7 @@ export const URLTrackerCard = ({
               </div>
             </CardContent>
           </Card>
-        )
+        ),
       )}
     </React.Fragment>
   );

@@ -48,7 +48,7 @@ export const URLListItem = ({
   selectedQR,
   generateQRCode,
   resetQRCode,
-}: URLListItemProps) => {
+}: URLListItemProps): React.ReactElement => {
   const [visible, setVisible] = useState(true);
   const shortUrl = `${baseUrl}/${code}`;
 
