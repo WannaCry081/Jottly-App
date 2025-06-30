@@ -29,7 +29,7 @@ export default async function Page(): Promise<React.ReactElement> {
   return (
     <React.Fragment>
       <header className="max-w-xl mx-auto">
-        <div className="p-4 pt-8 lg:pt-14">
+        <div className="p-4 pt-8 lg:pt-10">
           <div className="flex items-center justify-between mb-2 md:mb-4">
             <span className="inline-flex items-center gap-2.5">
               <div className="size-8 md:size-10 bg-primary rounded-sm grid place-items-center">
@@ -39,7 +39,7 @@ export default async function Page(): Promise<React.ReactElement> {
                 Jottly
               </h1>
             </span>
-            <span className="inline-flex items-center space-x-2">
+            <span className="inline-flex items-center space-x-1.5">
               <Link
                 href="https://github.com/WannaCry081/Jottly-App"
                 target="_blank"
@@ -48,11 +48,12 @@ export default async function Page(): Promise<React.ReactElement> {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      size="icon"
                       variant="outline"
                       aria-label="View Jottly on GitHub"
+                      className="text-xs"
                     >
-                      <Github aria-hidden="true" focusable="false" />
+                      <Github className="size-4" />
+                      WannaCry081
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
